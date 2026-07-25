@@ -8,7 +8,7 @@ export interface Product {
     short_description: string;
     description: string | null;
 
-    status: "draft" | "published" | "archived";
+    status: "draft" | "active" | "archived";
 
     featured: boolean;
 
@@ -39,7 +39,7 @@ export interface ProductFormData {
     short_description: string;
     description?: string;
 
-    status: "draft" | "published" | "archived";
+    status: "draft" | "active" | "archived";
 
     featured: boolean;
 

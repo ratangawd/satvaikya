@@ -36,7 +36,7 @@ export default function ProductModal({
     const [description, setDescription] = useState("");
 
     const [status, setStatus] = useState<
-        "draft" | "published" | "archived"
+        "draft" | "active" | "archived"
     >("draft");
 
     const [featured, setFeatured] = useState(false);
@@ -177,217 +177,217 @@ export default function ProductModal({
 
                     <div className="grid grid-cols-2 gap-4">
 
-                        {/* Product Name */}
-                        <input
-                            className="rounded border p-3"
-                            placeholder="Product Name"
-                            value={name}
-                            onChange={(e) => {
-                                const value = e.target.value;
+  {/* Product Name */}
+  <input
+    className="rounded border p-3"
+    placeholder="Product Name"
+    value={name}
+    onChange={(e) => {
+      const value = e.target.value;
 
-                                setName(value);
+      setName(value);
 
-                                setSlug(
-                                    value
-                                        .toLowerCase()
-                                        .trim()
-                                        .replace(/\s+/g, "-")
-                                        .replace(/[^a-z0-9-]/g, "")
-                                );
-                            }}
-                            required
-                        />
+      setSlug(
+        value
+          .toLowerCase()
+          .trim()
+          .replace(/\s+/g, "-")
+          .replace(/[^a-z0-9-]/g, "")
+      );
+    }}
+    required
+  />
 
-                        {/* Slug */}
-                        <input
-                            className="rounded border p-3"
-                            placeholder="Slug"
-                            value={slug}
-                            onChange={(e) => setSlug(e.target.value)}
-                            required
-                        />
+  {/* Slug */}
+  <input
+    className="rounded border p-3"
+    placeholder="Slug"
+    value={slug}
+    onChange={(e) => setSlug(e.target.value)}
+    required
+  />
 
-                        {/* Category */}
-                        <select
-                            className="rounded border p-3"
-                            value={categoryId}
-                            onChange={(e) => setCategoryId(e.target.value)}
-                            required
-                        >
-                            <option value="">Select Category</option>
+  {/* Category */}
+  <select
+    className="rounded border p-3"
+    value={categoryId}
+    onChange={(e) => setCategoryId(e.target.value)}
+    required
+  >
+    <option value="">Select Category</option>
 
-                            {categories.map((category) => (
-                                <option key={category.id} value={category.id}>
-                                    {category.name}
-                                </option>
-                            ))}
-                        </select>
+    {categories.map((category) => (
+      <option key={category.id} value={category.id}>
+        {category.name}
+      </option>
+    ))}
+  </select>
 
-                        {/* Status */}
-                        <select
-                            className="rounded border p-3"
-                            value={status}
-                            onChange={(e) =>
-                                setStatus(
-                                    e.target.value as
-                                    | "draft"
-                                    | "published"
-                                    | "archived"
-                                )
-                            }
-                        >
-                            <option value="draft">Draft</option>
-                            <option value="published">Published</option>
-                            <option value="archived">Archived</option>
-                        </select>
+  {/* Status */}
+  <select
+    className="rounded border p-3"
+    value={status}
+    onChange={(e) =>
+      setStatus(
+        e.target.value as
+          | "draft"
+          | "active"
+          | "archived"
+      )
+    }
+  >
+    <option value="draft">Draft</option>
+    <option value="active">Active</option>
+    <option value="archived">Archived</option>
+  </select>
 
-                        {/* Display Order */}
-                        <input
-                            type="number"
-                            className="rounded border p-3"
-                            placeholder="Display Order"
-                            value={displayOrder}
-                            onChange={(e) =>
-                                setDisplayOrder(Number(e.target.value))
-                            }
-                        />
+  {/* Display Order */}
+  <input
+    type="number"
+    className="rounded border p-3"
+    placeholder="Display Order"
+    value={displayOrder}
+    onChange={(e) =>
+      setDisplayOrder(Number(e.target.value))
+    }
+  />
 
-                    </div>
+</div>
 
-                    {/* Short Description */}
+{/* Short Description */}
 
-                    <textarea
-                        className="w-full rounded border p-3"
-                        rows={3}
-                        placeholder="Short Description"
-                        value={shortDescription}
-                        onChange={(e) =>
-                            setShortDescription(e.target.value)
-                        }
-                        required
-                    />
+<textarea
+  className="w-full rounded border p-3"
+  rows={3}
+  placeholder="Short Description"
+  value={shortDescription}
+  onChange={(e) =>
+    setShortDescription(e.target.value)
+  }
+  required
+/>
 
-                    {/* Description */}
+{/* Description */}
 
-                    <textarea
-                        className="w-full rounded border p-3"
-                        rows={5}
-                        placeholder="Description"
-                        value={description}
-                        onChange={(e) =>
-                            setDescription(e.target.value)
-                        }
-                    />
+<textarea
+  className="w-full rounded border p-3"
+  rows={5}
+  placeholder="Description"
+  value={description}
+  onChange={(e) =>
+    setDescription(e.target.value)
+  }
+/>
 
-                    {/* Featured */}
+{/* Featured */}
 
-                    <label className="flex items-center gap-2">
+<label className="flex items-center gap-2">
 
-                        <input
-                            type="checkbox"
-                            checked={featured}
-                            onChange={(e) =>
-                                setFeatured(e.target.checked)
-                            }
-                        />
+  <input
+    type="checkbox"
+    checked={featured}
+    onChange={(e) =>
+      setFeatured(e.target.checked)
+    }
+  />
 
-                        Featured Product
+  Featured Product
 
-                    </label>
+</label>
 
-                    {/* Active */}
+{/* Active */}
 
-                    <label className="flex items-center gap-2">
+<label className="flex items-center gap-2">
 
-                        <input
-                            type="checkbox"
-                            checked={isActive}
-                            onChange={(e) =>
-                                setIsActive(e.target.checked)
-                            }
-                        />
+  <input
+    type="checkbox"
+    checked={isActive}
+    onChange={(e) =>
+      setIsActive(e.target.checked)
+    }
+  />
 
-                        Active Product
+  Active Product
 
-                    </label>
+</label>
 
-                    <hr />
+<hr />
 
-                    <h3 className="font-semibold text-lg">
-                        Marketplace
-                    </h3>
+<h3 className="font-semibold text-lg">
+  Marketplace
+</h3>
 
-                    <label className="flex items-center gap-2">
+<label className="flex items-center gap-2">
 
-                        <input
-                            type="checkbox"
-                            checked={amazonEnabled}
-                            onChange={(e) =>
-                                setAmazonEnabled(e.target.checked)
-                            }
-                        />
+  <input
+    type="checkbox"
+    checked={amazonEnabled}
+    onChange={(e) =>
+      setAmazonEnabled(e.target.checked)
+    }
+  />
 
-                        Available on Amazon
+  Available on Amazon
 
-                    </label>
+</label>
 
-                    {amazonEnabled && (
+{amazonEnabled && (
 
-                        <input
-                            className="w-full rounded border p-3"
-                            placeholder="Amazon Product URL"
-                            value={amazonUrl}
-                            onChange={(e) =>
-                                setAmazonUrl(e.target.value)
-                            }
-                            required
-                        />
+  <input
+    className="w-full rounded border p-3"
+    placeholder="Amazon Product URL"
+    value={amazonUrl}
+    onChange={(e) =>
+      setAmazonUrl(e.target.value)
+    }
+    required
+  />
 
-                    )}
+)}
 
-                    <hr />
+<hr />
 
-                    <h3 className="font-semibold text-lg">
-                        SEO
-                    </h3>
+<h3 className="font-semibold text-lg">
+  SEO
+</h3>
 
-                    <input
-                        className="w-full rounded border p-3"
-                        placeholder="SEO Title"
-                        value={seoTitle}
-                        onChange={(e) =>
-                            setSeoTitle(e.target.value)
-                        }
-                    />
+<input
+  className="w-full rounded border p-3"
+  placeholder="SEO Title"
+  value={seoTitle}
+  onChange={(e) =>
+    setSeoTitle(e.target.value)
+  }
+/>
 
-                    <textarea
-                        className="w-full rounded border p-3"
-                        rows={3}
-                        placeholder="SEO Description"
-                        value={seoDescription}
-                        onChange={(e) =>
-                            setSeoDescription(e.target.value)
-                        }
-                    />
+<textarea
+  className="w-full rounded border p-3"
+  rows={3}
+  placeholder="SEO Description"
+  value={seoDescription}
+  onChange={(e) =>
+    setSeoDescription(e.target.value)
+  }
+/>
 
-                    <div className="flex justify-end gap-3">
+<div className="flex justify-end gap-3">
 
-                        <button
-                            type="button"
-                            onClick={onClose}
-                            className="rounded border px-4 py-2"
-                        >
-                            Cancel
-                        </button>
+  <button
+    type="button"
+    onClick={onClose}
+    className="rounded border px-4 py-2"
+  >
+    Cancel
+  </button>
 
-                        <button
-                            disabled={loading}
-                            className="rounded bg-black px-4 py-2 text-white"
-                        >
-                            {loading ? "Saving..." : "Save Product"}
-                        </button>
+  <button
+    disabled={loading}
+    className="rounded bg-black px-4 py-2 text-white"
+  >
+    {loading ? "Saving..." : "Save Product"}
+  </button>
 
-                    </div>
+</div>
 
                 </form>
 

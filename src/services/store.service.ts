@@ -45,7 +45,7 @@ export async function getStoreCategories() {
             .filter(
                 (product: any) =>
                     product.is_active &&
-                    product.status === "published"
+                    product.status === "active"
             )
             .sort(
                 (a: any, b: any) =>
@@ -149,16 +149,31 @@ export async function getStoreProduct(
     };
 }
 
+function collectFeaturedProducts(
+    categories: any[],
+    featured: any[] = []
+) {
+    for (const category of categories) {
+        featured.push(
+            ...(category.products ?? [])
+                .filter((product: any) => product.featured)
+                .map((product: any) => ({
+                    ...product,
+                    categorySlug: category.slug,
+                    categoryName: category.name,
+                }))
+        );
+
+        if (category.children?.length) {
+            collectFeaturedProducts(category.children, featured);
+        }
+    }
+
+    return featured;
+}
+
 export async function getFeaturedProducts() {
     const categories = await getStoreCategories();
 
-    return categories.flatMap((category) =>
-        category.products
-            .filter((product: any) => product.featured)
-            .map((product: any) => ({
-                ...product,
-                categorySlug: category.slug,
-                categoryName: category.name,
-            }))
-    );
+    return collectFeaturedProducts(categories);
 }
