@@ -5,13 +5,25 @@ export async function getProducts(): Promise<Product[]> {
     const { data, error } = await supabase
         .from("products")
         .select(`
-      *,
-      categories(name)
-    `)
+    *,
+    categories!products_category_id_fkey (
+        id,
+        name,
+        slug
+    ),
+    product_images (
+        id,
+        storage_path,
+        alt_text,
+        display_order,
+        is_primary
+    )
+`)
         .order("display_order", { ascending: true });
 
     if (error) throw error;
-
+        
+    console.log(data);
     return data as Product[];
 }
 

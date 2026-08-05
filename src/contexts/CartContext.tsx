@@ -1,4 +1,12 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
+import { useCustomerAuth } from "./CustomerAuthContext";
+import {
+  getCart,
+  addToCart,
+  updateCartQuantity,
+  removeFromCart,
+  clearCart,
+} from "@/services/cart.service";
 
 export interface CartItem {
   id: string; // categorySlug/productSlug
@@ -9,6 +17,12 @@ export interface CartItem {
   categorySlug: string;
   productSlug: string;
   quantity: number;
+  /**
+   * Full, ready-to-use product URL, built once via getProductUrl() when the
+   * item was added. Prefer this over reconstructing from categorySlug/productSlug,
+   * which loses the ancestor chain for subcategory products.
+   */
+  url?: string;
 }
 
 interface CartContextValue {
@@ -25,27 +39,44 @@ interface CartContextValue {
 }
 
 const CartContext = createContext<CartContextValue | null>(null);
-const STORAGE_KEY = "satvaikya-cart-v1";
 
 export function CartProvider({ children }: { children: ReactNode }) {
-  const [items, setItems] = useState<CartItem[]>(() => {
-    if (typeof window === "undefined") return [];
-    try {
-      const raw = window.localStorage.getItem(STORAGE_KEY);
-      return raw ? (JSON.parse(raw) as CartItem[]) : [];
-    } catch {
-      return [];
+  const { user } = useCustomerAuth();
+
+  const loadCart = useCallback(async () => {
+    if (!user) {
+      setItems([]);
+      return;
     }
-  });
-  const [isOpen, setIsOpen] = useState(false);
+
+    try {
+      const cart = await getCart(user.id);
+
+      setItems(
+        cart.map((item) => ({
+          id: item.id,
+          code: item.products.code ?? "",
+          name: item.products.name,
+          price: Number(item.products.price ?? 0),
+          image: item.products.image,
+          categorySlug: item.products.category_slug,
+          productSlug: item.products.slug,
+          quantity: item.quantity,
+        }))
+      );
+    } catch (error) {
+      console.error("Failed to load cart:", error);
+      setItems([]);
+    }
+  }, [user]);
 
   useEffect(() => {
-    try {
-      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
-    } catch {
-      /* ignore quota */
-    }
-  }, [items]);
+    loadCart();
+  }, [loadCart]);
+
+  const [items, setItems] = useState<CartItem[]>([]);
+
+  const [isOpen, setIsOpen] = useState(false);
 
   const addItem = useCallback((item: Omit<CartItem, "quantity">, qty = 1) => {
     setItems((prev) => {

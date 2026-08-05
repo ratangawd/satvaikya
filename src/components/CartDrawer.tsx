@@ -10,10 +10,10 @@ export default function CartDrawer() {
     const lines = [
       "Hello SatvAikya, I would like to order:",
       "",
-      ...items.map(
-        (i) =>
-          `• ${i.name} (${i.code}) — Qty ${i.quantity} × ${formatINR(i.price)} = ${formatINR(i.price * i.quantity)}`,
-      ),
+      ...items.map((i) => {
+        const codeText = i.code?.trim() ? ` (${i.code.trim()})` : "";
+        return `• ${i.name}${codeText} — Qty ${i.quantity} × ${formatINR(i.price)} = ${formatINR(i.price * i.quantity)}`;
+      }),
       "",
       `Subtotal: ${formatINR(subtotal)}`,
     ];

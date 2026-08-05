@@ -1,8 +1,25 @@
 import { Link } from "react-router-dom";
 import { Instagram, Facebook, Mail, Phone, MapPin } from "lucide-react";
-import { categories } from "@/data/products";
+import { useEffect, useState } from "react";
+import { getStoreCategories } from "@/services/store.service";
+import { getCategoryUrl } from "@/services/store.service";
 
 export default function Footer() {
+  const [categories, setCategories] = useState<any[]>([]);
+
+  useEffect(() => {
+    async function loadCategories() {
+      try {
+        const data = await getStoreCategories();
+        console.log("FOOTER CATEGORIES", data);
+        setCategories(data);
+      } catch (err) {
+        console.error("Failed to load footer categories", err);
+      }
+    }
+
+    loadCategories();
+  }, []);
   return (
     <footer className="mt-24 bg-[oklch(0.22_0.02_150)] text-white">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 grid gap-12 md:grid-cols-2 lg:grid-cols-4">
@@ -41,9 +58,14 @@ export default function Footer() {
         <div>
           <h4 className="font-display text-lg mb-4 text-gold">Collections</h4>
           <ul className="space-y-2 text-sm text-white/80">
-            {categories.slice(0, 6).map((c) => (
+            {categories
+              .filter(
+                (c) => c.products.length > 0 || c.children.length > 0
+              )
+              .slice(0, 6)
+              .map((c) => (
               <li key={c.slug}>
-                <Link to={`/collections/${c.slug}`} className="hover:text-gold transition">
+                  <Link to={getCategoryUrl(c)} className="hover:text-gold transition">
                   {c.name}
                 </Link>
               </li>

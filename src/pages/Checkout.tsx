@@ -4,19 +4,24 @@ import { MessageCircle, ShoppingBag } from "lucide-react";
 import SEO from "@/components/SEO";
 import PageTransition from "@/components/PageTransition";
 import { formatINR, useCart, WHATSAPP_NUMBER } from "@/contexts/CartContext";
+import { useAddresses } from "@/contexts/AddressContext";
+import AddressForm from "@/components/checkout/AddressForm";
 
 export default function Checkout() {
   const { items, subtotal, clear } = useCart();
   const navigate = useNavigate();
+  const { addresses, defaultAddress } = useAddresses();
+  const [showAddressForm, setShowAddressForm] = useState(false);
   const [placed, setPlaced] = useState(false);
 
   const submit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (items.length === 0) return;
     const f = new FormData(e.currentTarget);
-    const orderLines = items.map(
-      (i) => `• ${i.name} (${i.code}) — Qty ${i.quantity} × ${formatINR(i.price)} = ${formatINR(i.price * i.quantity)}`,
-    );
+    const orderLines = items.map((i) => {
+      const codeText = i.code?.trim() ? ` (${i.code.trim()})` : "";
+      return `• ${i.name}${codeText} — Qty ${i.quantity} × ${formatINR(i.price)} = ${formatINR(i.price * i.quantity)}`;
+    });
     const text = [
       "🛒 *New Order — SatvAikya*",
       "",

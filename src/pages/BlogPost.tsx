@@ -26,7 +26,7 @@ export default function BlogPost() {
           description: post.excerpt,
           image: post.cover,
           author: { "@type": "Organization", name: post.author },
-          datePublished: post.date,
+          dateactive: post.date,
         }}
       />
       <article className="pt-28">

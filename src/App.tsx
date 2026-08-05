@@ -9,18 +9,24 @@ import Dashboard from "./admin/pages/Dashboard";
 import Login from "./admin/pages/Login";
 import Categories from "./admin/pages/Categories";
 import Products from "./admin/pages/Products";
+import CustomerProtectedRoute from "./components/customer/auth/CustomerProtectedRoute";
+import ProfileEnquiries from "@/pages/ProfileEnquiries";
 
 const Home = lazy(() => import("./pages/Home"));
 const About = lazy(() => import("./pages/About"));
 const Collections = lazy(() => import("./pages/Collections"));
-const CategoryPage = lazy(() => import("./pages/CategoryPage"));
-const ProductPage = lazy(() => import("./pages/ProductPage"));
 const Blog = lazy(() => import("./pages/Blog"));
 const BlogPost = lazy(() => import("./pages/BlogPost"));
 const Contact = lazy(() => import("./pages/Contact"));
 const Checkout = lazy(() => import("./pages/Checkout"));
 const Wishlist = lazy(() => import("./pages/Wishlist"));
 const NotFound = lazy(() => import("./pages/NotFound"));
+const Register = lazy(() => import("./pages/customer/Register"));
+const LoginPage = lazy(() => import("./pages/customer/Login"));
+const Profile = lazy(() => import("./pages/customer/Profile"));
+const CategoryOrProductResolver = lazy(
+  () => import("./pages/CategoryOrProductResolver")
+);
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -56,19 +62,46 @@ export default function App() {
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
             <Route path="/collections" element={<Collections />} />
+
+            {/*
+              Single wildcard route handles every depth:
+                /collections/gifts
+                /collections/gifts/personalized-gifts
+                /collections/gifts/personalized-gifts/keychain
+                /collections/diy-kits
+                /collections/diy-kits/diy-magnetic
+              CategoryOrProductResolver resolves the segments via
+              store.service's resolveStorePath() and renders CategoryPage
+              or ProductPage with the resolved data as props.
+            */}
             <Route
-              path="/collections/:categorySlug"
-              element={<CategoryPage />}
-            />
-            <Route
-              path="/collections/:categorySlug/:productSlug"
-              element={<ProductPage />}
+              path="/collections/*"
+              element={<CategoryOrProductResolver />}
             />
             <Route path="/blog" element={<Blog />} />
             <Route path="/blog/:slug" element={<BlogPost />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/checkout" element={<Checkout />} />
             <Route path="/wishlist" element={<Wishlist />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route
+              path="/profile"
+              element={
+                <CustomerProtectedRoute>
+                  <Profile />
+                </CustomerProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/profile/enquiries"
+              element={
+                <CustomerProtectedRoute>
+                  <ProfileEnquiries />
+                </CustomerProtectedRoute>
+              }
+            />
 
             {/* Admin */}
             <Route path="/admin/login" element={<Login />} />

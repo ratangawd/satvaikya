@@ -8,6 +8,13 @@ export interface WishlistItem {
   image: string;
   categorySlug: string;
   productSlug: string;
+  /**
+   * Full, ready-to-use product URL (e.g. "/collections/gifts/personalized-gifts/keychain"),
+   * built once via getProductUrl() when the item was added. Always prefer this
+   * over reconstructing a path from categorySlug/productSlug — those two alone
+   * lose the ancestor chain for anything under a subcategory.
+   */
+  url?: string;
 }
 
 interface WishlistContextValue {

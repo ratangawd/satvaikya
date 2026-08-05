@@ -2,16 +2,46 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { Search, X } from "lucide-react";
-import { allProducts } from "@/data/products";
 import { formatINR } from "@/contexts/CartContext";
+import { getStoreCategories } from "@/services/store.service";
 
 interface Props {
   open: boolean;
   onClose: () => void;
 }
 
+type SearchProduct = {
+  slug: string;
+  code: string;
+  name: string;
+  price: number;
+  image: string;
+  categorySlug: string;
+  categoryName: string;
+  categoryPath: string;
+};
+
+function flattenCategories(categories: any[], parentPath: string[] = []): SearchProduct[] {
+  return categories.flatMap((category) => {
+    const nextPath = [...parentPath, category.slug];
+    const products = (category.products ?? []).map((product: any) => ({
+      slug: product.slug,
+      code: product.code ?? "",
+      name: product.name,
+      price: product.price ?? 0,
+      image: product.image ?? "",
+      categorySlug: nextPath.join("/"),
+      categoryName: category.name,
+      categoryPath: nextPath.join("/"),
+    }));
+
+    return [...products, ...flattenCategories(category.children ?? [], nextPath)];
+  });
+}
+
 export default function SearchOverlay({ open, onClose }: Props) {
   const [q, setQ] = useState("");
+  const [catalog, setCatalog] = useState<SearchProduct[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -35,10 +65,33 @@ export default function SearchOverlay({ open, onClose }: Props) {
     return () => window.removeEventListener("keydown", onKey);
   }, [open, onClose]);
 
+  useEffect(() => {
+    if (!open) return;
+
+    let mounted = true;
+
+    async function loadCatalog() {
+      try {
+        const categories = await getStoreCategories();
+        if (!mounted) return;
+        setCatalog(flattenCategories(categories));
+      } catch (error) {
+        console.error("Failed to load searchable products:", error);
+        if (mounted) setCatalog([]);
+      }
+    }
+
+    loadCatalog();
+
+    return () => {
+      mounted = false;
+    };
+  }, [open]);
+
   const results = useMemo(() => {
     const term = q.trim().toLowerCase();
     if (!term) return [];
-    return allProducts
+    return catalog
       .filter(
         (p) =>
           p.name.toLowerCase().includes(term) ||
@@ -47,7 +100,7 @@ export default function SearchOverlay({ open, onClose }: Props) {
           p.categorySlug.toLowerCase().includes(term),
       )
       .slice(0, 24);
-  }, [q]);
+  }, [q, catalog]);
 
   return (
     <AnimatePresence>
@@ -99,9 +152,9 @@ export default function SearchOverlay({ open, onClose }: Props) {
               ) : (
                 <ul className="divide-y divide-border">
                   {results.map((p) => (
-                    <li key={`${p.categorySlug}/${p.slug}`}>
+                    <li key={`${p.categoryPath}/${p.slug}`}>
                       <Link
-                        to={`/collections/${p.categorySlug}/${p.slug}`}
+                        to={`/collections/${p.categoryPath}/${p.slug}`}
                         onClick={onClose}
                         className="flex items-center gap-3 sm:gap-4 px-4 sm:px-5 py-3 hover:bg-muted transition"
                       >

@@ -3,8 +3,17 @@ import { motion } from "framer-motion";
 import { Heart, ShoppingBag, Trash2, ArrowRight } from "lucide-react";
 import SEO from "@/components/SEO";
 import PageTransition from "@/components/PageTransition";
-import { useWishlist } from "@/contexts/WishlistContext";
+import { useWishlist, type WishlistItem } from "@/contexts/WishlistContext";
 import { formatINR, useCart } from "@/contexts/CartContext";
+
+/**
+ * Prefer the pre-computed `url` (correct at any depth). Only falls back to
+ * the old 2-segment reconstruction for items saved before `url` existed —
+ * those may still 404 for subcategory products until re-saved.
+ */
+function itemHref(p: WishlistItem) {
+  return p.url ?? `/collections/${p.categorySlug}/${p.productSlug}`;
+}
 
 export default function Wishlist() {
   const { items, remove, clear } = useWishlist();
@@ -68,7 +77,7 @@ export default function Wishlist() {
                     transition={{ duration: 0.4, delay: i * 0.04 }}
                     className="group bg-card rounded-2xl border border-border overflow-hidden hover:shadow-xl transition-all"
                   >
-                    <Link to={`/collections/${p.categorySlug}/${p.productSlug}`} className="block">
+                    <Link to={itemHref(p)} className="block">
                       <div className="aspect-square overflow-hidden">
                         <img
                           src={p.image}
@@ -83,7 +92,7 @@ export default function Wishlist() {
                     <div className="p-3 sm:p-4">
                       <div className="text-[10px] uppercase tracking-widest text-gold">Code {p.code}</div>
                       <Link
-                        to={`/collections/${p.categorySlug}/${p.productSlug}`}
+                        to={itemHref(p)}
                         className="mt-1 block font-display text-sm sm:text-base line-clamp-2 group-hover:text-brand transition"
                       >
                         {p.name}
@@ -102,6 +111,7 @@ export default function Wishlist() {
                               image: p.image,
                               categorySlug: p.categorySlug,
                               productSlug: p.productSlug,
+                              url: p.url,
                             })
                           }
                           className="flex-1 inline-flex items-center justify-center gap-1 px-2 sm:px-3 py-2 rounded-full bg-brand text-white text-xs sm:text-sm font-medium hover:opacity-90 transition"
