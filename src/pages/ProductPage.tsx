@@ -206,19 +206,29 @@ export default function ProductPage({
       </section>
 
       <section className="pb-16">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-10">
-          {/* GALLERY */}
-          <div>
-            <div className="relative">
-              <motion.div
-                key={activeImg}
-                initial={{ opacity: 0, scale: 0.98 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.35 }}
-                className="aspect-square rounded-2xl overflow-hidden bg-card border border-border"
-              >
-                <img src={images[activeImg]} alt={product.name} className="h-full w-full object-cover" width={1024} height={1024} />
-              </motion.div>
+  <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-10">
+    {/* GALLERY */}
+    <div>
+      <div className="relative">
+        <motion.div
+          key={activeImg}
+          initial={{ opacity: 0, scale: 0.98 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.35 }}
+          className="aspect-square rounded-2xl border border-border bg-white flex items-center justify-center p-4"
+        >
+          <img
+            src={images[activeImg]}
+            alt={product.name}
+            className="block max-h-full max-w-full object-contain"
+            loading="eager"
+            decoding="async"
+            draggable={false}
+            width={1600}
+            height={1600}
+          />
+        </motion.div>
+
 
               <button
                 onClick={() => wishToggle(wishItem)}
@@ -240,7 +250,7 @@ export default function ProductPage({
                   onClick={() => setActiveImg(i)}
                   className={`aspect-square rounded-xl overflow-hidden border-2 transition ${activeImg === i ? "border-brand" : "border-border hover:border-gold"}`}
                 >
-                  <img src={img} alt={`${product.name} view ${i + 1}`} loading="lazy" width={300} height={300} className="h-full w-full object-cover" />
+                  <img src={img} alt={`${product.name} view ${i + 1}`} loading="lazy" width={300} height={300} className="h-full w-full object-contain bg-white" />
                 </button>
               ))}
             </div>
@@ -410,7 +420,7 @@ export default function ProductPage({
         </div>
       </section>
 
-      {/* REVIEWS */}
+      {/* REVIEWS
       <section className="py-16 bg-[oklch(0.95_0.01_85)]">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <h2 className="font-display text-3xl md:text-4xl">Customer reviews</h2>
@@ -428,7 +438,7 @@ export default function ProductPage({
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* FAQ */}
       <section className="py-16">

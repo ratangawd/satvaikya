@@ -3,6 +3,7 @@ import { Heart, Leaf, Target, Eye, Award } from "lucide-react";
 import SEO from "@/components/SEO";
 import PageTransition from "@/components/PageTransition";
 import hero from "@/assets/hero-lifestyle.jpg";
+import heroo from "@/assets/about-us.png";
 
 const values = [
   { icon: Heart, title: "Made with love", text: "Every piece leaves our workshop only when it feels ready — never before." },
@@ -25,10 +26,10 @@ export default function About() {
         title="About SatvAikya — Our Story, Mission & Craft"
         description="SatvAikya is a design-led wooden decor studio committed to sustainable materials, thoughtful design and heritage craftsmanship for the modern Indian home."
         path="/about"
-        image={hero}
+        image={heroo}
       />
 
-      <section className="relative pt-32 pb-16 md:pt-40 md:pb-24">
+      <section className="relative pt-12 pb-16 md:pt-16 md:pb-24">
         <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 text-center">
           <span className="text-xs uppercase tracking-[0.25em] text-brand font-medium">About Us</span>
           <h1 className="mt-4 font-display text-4xl md:text-6xl leading-tight">
@@ -42,7 +43,7 @@ export default function About() {
 
       <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="relative rounded-3xl overflow-hidden aspect-[16/9] md:aspect-[21/9]">
-          <img src={hero} alt="SatvAikya studio interior" className="absolute inset-0 h-full w-full object-cover" loading="lazy" width={1920} height={900} />
+          <img src={heroo} alt="SatvAikya studio interior" className="absolute inset-0 h-full w-full object-cover" loading="lazy" width={1920} height={900} />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
         </div>
       </section>

@@ -11,6 +11,9 @@ import Categories from "./admin/pages/Categories";
 import Products from "./admin/pages/Products";
 import CustomerProtectedRoute from "./components/customer/auth/CustomerProtectedRoute";
 import ProfileEnquiries from "@/pages/ProfileEnquiries";
+import Enquiries from "./admin/pages/Enquiries";
+import CustomerEnquiries from "./admin/pages/CustomerEnquiries";
+import Infrastructure from "./pages/Infrastructure";
 
 const Home = lazy(() => import("./pages/Home"));
 const About = lazy(() => import("./pages/About"));
@@ -24,6 +27,7 @@ const NotFound = lazy(() => import("./pages/NotFound"));
 const Register = lazy(() => import("./pages/customer/Register"));
 const LoginPage = lazy(() => import("./pages/customer/Login"));
 const Profile = lazy(() => import("./pages/customer/Profile"));
+
 const CategoryOrProductResolver = lazy(
   () => import("./pages/CategoryOrProductResolver")
 );
@@ -85,6 +89,8 @@ export default function App() {
             <Route path="/wishlist" element={<Wishlist />} />
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<LoginPage />} />
+            <Route path="/infrastructure" element={<Infrastructure />} />
+
             <Route
               path="/profile"
               element={
@@ -126,6 +132,17 @@ export default function App() {
             <Route
               path="/admin/products"
               element={<Products />}
+            />
+
+            <Route path="/admin/enquiries" element={<Enquiries />} />
+
+            <Route
+              path="/admin/enquiries/:customerId"
+              element={
+                <ProtectedRoute>
+                  <CustomerEnquiries />
+                </ProtectedRoute>
+              }
             />
 
             <Route path="*" element={<NotFound />} />

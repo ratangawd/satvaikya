@@ -23,6 +23,7 @@ import PageTransition from "@/components/PageTransition";
 import WishlistButton from "@/components/WishlistButton";
 import NotFound from "./NotFound";
 import { formatINR } from "@/contexts/CartContext";
+import { getCategoryImageUrl } from "@/services/category-image.service";
 
 type Sort = "featured" | "priceAsc" | "priceDesc" | "name";
 
@@ -138,7 +139,7 @@ export default function CategoryPage({ category: categoryProp }: CategoryPagePro
       {/* BANNER */}
       <section className="relative pt-24 h-[52vh] min-h-[400px] flex items-end overflow-hidden">
         <img
-          src={category.image}
+          src={category.bannerImage || category.image}
           alt={category.name}
           className="absolute inset-0 h-full w-full object-cover"
           width={1920}

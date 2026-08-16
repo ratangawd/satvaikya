@@ -9,8 +9,12 @@ export interface Category {
     created_at: string;
     updated_at: string;
 
+    // Collection card image
     image_path?: string | null;
     image_alt?: string | null;
+
+    // Collection page banner image
+    banner_image_path?: string | null;
 }
 
 export interface CategoryFormData {
@@ -21,6 +25,11 @@ export interface CategoryFormData {
     display_order?: number;
     is_active?: boolean;
 
+    // Collection card image
     image?: File | null;
+
+    // Collection page banner image
+    bannerImage?: File | null;
+
     image_alt?: string;
-}
+}   

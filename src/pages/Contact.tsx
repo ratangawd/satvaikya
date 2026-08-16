@@ -68,7 +68,7 @@ export default function Contact() {
           address: { "@type": "PostalAddress", addressLocality: "Hyderabad", addressCountry: "IN" },
         }}
       />
-      <section className="pt-32 pb-10 md:pt-40">
+      <section className="relative pt-12 pb-10 md:pt-16 md:pb-12">
         <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 text-center">
           <span className="text-xs uppercase tracking-[0.25em] text-brand font-medium">Contact</span>
           <h1 className="mt-3 font-display text-4xl md:text-6xl">Let's get closer</h1>

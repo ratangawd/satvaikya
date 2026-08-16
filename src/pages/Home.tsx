@@ -1,6 +1,18 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowRight, Award, Leaf, Sparkles, Truck, Mail, Phone, MapPin, Clock, MessageCircle } from "lucide-react";
+import {
+  ArrowRight,
+  Award,
+  Leaf,
+  Sparkles,
+  Truck,
+  Mail,
+  Phone,
+  MapPin,
+  Clock,
+  MessageCircle,
+  Instagram,
+} from "lucide-react";
 import SEO from "@/components/SEO";
 import PageTransition from "@/components/PageTransition";
 import { blogs } from "@/data/blogs";
@@ -122,6 +134,29 @@ export default function Home() {
     return () => clearInterval(interval);
   }, []);
 
+  const getCategoryPath = (category: any): string => {
+    const parts: string[] = [];
+    let current = category;
+
+    const visited = new Set<string>();
+
+    while (current) {
+      // Prevent accidental infinite loops
+      if (visited.has(current.id)) break;
+      visited.add(current.id);
+
+      parts.unshift(current.slug);
+
+      if (!current.parent_id) break;
+
+      current = categories.find(
+        (cat) => cat.id === current.parent_id
+      );
+    }
+
+    return parts.join("/");
+  };
+
   return (
     <PageTransition>
       <SEO
@@ -236,10 +271,10 @@ export default function Home() {
                       transition={{ duration: 0.35, delay: i * 0.06, ease: "easeOut" }}
                     >
                       <Link
-                        to={`/collections/${c.slug}`}
+                        to={`/collections/${getCategoryPath(c)}`}
                         className="group block overflow-hidden rounded-2xl bg-card border border-border shadow-sm hover:shadow-xl transition-all duration-500"
                       >
-                        <div className="h-40 sm:h-56 lg:h-80 overflow-hidden">
+                        <div className="aspect-square bg-white flex items-center justify-center overflow-hidden p-4">
                           <img
                             src={
                               c.image_path
@@ -247,22 +282,26 @@ export default function Home() {
                                 : c.image
                             }
                             alt={c.image_alt || c.name}
-                            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                            className="max-h-full max-w-full object-contain transition-transform duration-700 group-hover:scale-105"
                             loading="lazy"
                             width={800}
-                            height={1000}
+                            height={800}
                           />
                         </div>
-                        <div className="p-5 flex items-start justify-between gap-3">
+                        <div className="flex flex-1 items-start justify-between gap-4 px-6 py-5 min-h-[120px] bg-[#F8F4EA] border-t border-[#E6D7B8]">
                           <div className="min-w-0">
-                            <div className="text-[11px] uppercase tracking-widest text-gold">
-                              {c.tagline}
-                            </div>
-                            <h3 className="mt-1 font-display text-xl group-hover:text-brand transition-colors">
+                            {c.tagline && (
+                              <div className="text-[11px] uppercase tracking-[0.2em] text-[#8A6A3F] font-medium">
+                                {c.tagline}
+                              </div>
+                            )}
+
+                            <h3 className="mt-2 font-display text-lg sm:text-xl leading-snug text-[#24324A] break-words group-hover:text-[#7B9E00] transition-colors">
                               {c.name}
                             </h3>
                           </div>
-                          <ArrowRight className="h-5 w-5 text-muted-foreground group-hover:text-brand group-hover:translate-x-1 transition-all shrink-0 mt-1" />
+
+                          <ArrowRight className="h-5 w-5 shrink-0 mt-1 text-[#7B9E00] group-hover:translate-x-1 transition-all duration-300" />
                         </div>
                       </Link>
                     </motion.div>
@@ -408,22 +447,26 @@ export default function Home() {
                         href={product.instagram_url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="group block aspect-[4/5] overflow-hidden rounded-xl relative shadow-sm hover:shadow-xl transition-all duration-300"
+                        className="group block aspect-[4/5] overflow-hidden rounded-xl relative bg-white shadow-sm hover:shadow-xl transition-all duration-300"
                       >
                         <img
-                          src={
-                            supabase.storage
-                              .from("product-images")
-                              .getPublicUrl(image.storage_path).data.publicUrl
-                          }
-                          alt={product.name}
-                          loading="lazy"
-                          width={600}
-                          height={750}
-                          className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
-                        />
+  src={
+    supabase.storage
+      .from("product-images")
+      .getPublicUrl(image.storage_path).data.publicUrl
+  }
+  alt={product.name}
+  loading="lazy"
+  width={600}
+  height={750}
+  className="h-full w-full object-contain bg-white transition-transform duration-500 group-hover:scale-105"
+/>
 
-                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300" />
+                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors duration-300 flex items-center justify-center">
+                          <Instagram
+                            className="h-10 w-10 text-white opacity-0 scale-75 group-hover:opacity-100 group-hover:scale-100 transition-all duration-300 drop-shadow-lg"
+                          />
+                        </div>
                       </a>
                     );
                   })}

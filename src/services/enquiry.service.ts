@@ -1,6 +1,15 @@
 import { supabase } from "@/lib/supabase";
 
 export async function getCustomerEnquiries(customerId: string) {
+    const {
+        data: { user },
+        error: authError,
+    } = await supabase.auth.getUser();
+
+    if (authError || !user || user.id !== customerId) {
+        throw new Error("Unauthorized");
+    }
+
     const { data, error } = await supabase
         .from("enquiries")
         .select(`
@@ -49,10 +58,26 @@ interface CreateEnquiryInput {
 export async function createEnquiry(
     enquiry: CreateEnquiryInput
 ) {
+    const {
+        data: { user },
+        error: authError,
+    } = await supabase.auth.getUser();
+
+    if (authError || !user) {
+        throw new Error("Unauthorized");
+    }
+
+    const safeCustomerId = enquiry.customer_id ?? user.id;
+
+    if (user.id !== safeCustomerId) {
+        throw new Error("Unauthorized");
+    }
+
     const { data, error } = await supabase
         .from("enquiries")
         .insert({
             ...enquiry,
+            customer_id: safeCustomerId,
             status: "new",
         })
         .select()

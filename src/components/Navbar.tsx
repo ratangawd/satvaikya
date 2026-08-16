@@ -28,6 +28,7 @@ const nav = [
   { to: "/", label: "Home" },
   { to: "/about", label: "About" },
   { to: "/collections", label: "Collections", mega: true },
+  { to: "/infrastructure", label: "Infrastructure",},
   { to: "/blog", label: "Blog" },
   { to: "/contact", label: "Contact" },
 ];

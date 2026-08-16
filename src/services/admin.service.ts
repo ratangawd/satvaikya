@@ -1,6 +1,15 @@
 import { supabase } from "@/lib/supabase";
 
 export async function getAdminProfile(userId: string) {
+    const {
+        data: { user },
+        error: authError,
+    } = await supabase.auth.getUser();
+
+    if (authError || !user || user.id !== userId) {
+        return null;
+    }
+
     const { data, error } = await supabase
         .from("admin_profiles")
         .select("*")

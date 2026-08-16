@@ -28,10 +28,18 @@ async function uploadCategoryImage(file: File): Promise<string> {
 export async function createCategory(
     category: CategoryFormData
 ): Promise<Category> {
-    let imagePath = "";
 
+    let imagePath = "";
+    let bannerImagePath = "";
+
+    // Upload collection card image
     if (category.image) {
         imagePath = await uploadCategoryImage(category.image);
+    }
+
+    // Upload collection banner image
+    if (category.bannerImage) {
+        bannerImagePath = await uploadCategoryImage(category.bannerImage);
     }
 
     const { data, error } = await supabase
@@ -45,7 +53,12 @@ export async function createCategory(
                 display_order: category.display_order ?? 0,
                 is_active: category.is_active ?? true,
 
+                // Card image
                 image_path: imagePath || null,
+
+                // Banner image
+                banner_image_path: bannerImagePath || null,
+
                 image_alt: category.image_alt ?? "",
             },
         ])
@@ -61,10 +74,18 @@ export async function updateCategory(
     id: string,
     category: CategoryFormData
 ): Promise<Category> {
-    let imagePath: string | undefined;
 
+    let imagePath: string | undefined;
+    let bannerImagePath: string | undefined;
+
+    // Upload new card image only if selected
     if (category.image) {
         imagePath = await uploadCategoryImage(category.image);
+    }
+
+    // Upload new banner image only if selected
+    if (category.bannerImage) {
+        bannerImagePath = await uploadCategoryImage(category.bannerImage);
     }
 
     const { data, error } = await supabase
@@ -79,6 +100,10 @@ export async function updateCategory(
 
             ...(imagePath && {
                 image_path: imagePath,
+            }),
+
+            ...(bannerImagePath && {
+                banner_image_path: bannerImagePath,
             }),
 
             image_alt: category.image_alt ?? "",

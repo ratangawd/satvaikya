@@ -25,7 +25,7 @@ export default function Blog() {
         description="Articles on wooden decor, festival gifting, home styling, DIY kits and thoughtful design — from the SatvAikya studio."
         path="/blog"
       />
-      <section className="pt-32 pb-10 md:pt-40">
+      <section className="pt-12 pb-10 md:pt-16">
         <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 text-center">
           <span className="text-xs uppercase tracking-[0.25em] text-brand font-medium">Journal</span>
           <h1 className="mt-3 font-display text-4xl md:text-6xl">Stories from the studio</h1>

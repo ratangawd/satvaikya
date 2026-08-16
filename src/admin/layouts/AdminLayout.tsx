@@ -5,6 +5,7 @@ import {
   LayoutDashboard,
   FolderTree,
   Package,
+  MessageSquare,
   LogOut,
   ShieldCheck,
 } from "lucide-react";
@@ -23,6 +24,7 @@ const NAV_ITEMS: NavItem[] = [
   { label: "Dashboard", to: "/admin/dashboard", icon: LayoutDashboard },
   { label: "Categories", to: "/admin/categories", icon: FolderTree },
   { label: "Products", to: "/admin/products", icon: Package },
+  { label: "Enquiries", to: "/admin/enquiries", icon: MessageSquare },
 ];
 
 export default function AdminLayout({ children }: Props) {

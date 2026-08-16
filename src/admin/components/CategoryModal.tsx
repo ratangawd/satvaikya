@@ -24,6 +24,7 @@ export default function CategoryModal({
     const [categories, setCategories] = useState<Category[]>([]);
     const [parentId, setParentId] = useState("");
     const [image, setImage] = useState<File | null>(null);
+    const [bannerImage, setBannerImage] = useState<File | null>(null);
     const [imageAlt, setImageAlt] = useState("");
 
     useEffect(() => {
@@ -56,6 +57,7 @@ export default function CategoryModal({
                 description,
                 parent_id: parentId || null,
                 image,
+                bannerImage,
                 image_alt: imageAlt,
             });
 
@@ -128,6 +130,24 @@ export default function CategoryModal({
                         value={imageAlt}
                         onChange={(e) => setImageAlt(e.target.value)}
                     />
+                    <div>
+                        <label className="mb-2 block text-sm font-medium">
+                            Collection Banner Image
+                        </label>
+
+                        <p className="mb-2 text-xs text-gray-500">
+                            Used on the individual collection page. Recommended: wide
+                            high-resolution image.
+                        </p>
+
+                        <input
+                            type="file"
+                            accept="image/*"
+                            onChange={(e) =>
+                                setBannerImage(e.target.files?.[0] ?? null)
+                            }
+                        />
+                    </div>
 
                     <select
                         className="w-full rounded border p-3"

@@ -5,6 +5,7 @@ import SEO from "@/components/SEO";
 import PageTransition from "@/components/PageTransition";
 import { useEffect, useState } from "react";
 import { getStoreCategories } from "@/services/store.service";
+import DecorativeLayer from "@/components/decorative/DecorativeLayer";
 
 export default function Collections() {
   const [categories, setCategories] = useState<any[]>([]);
@@ -40,7 +41,7 @@ export default function Collections() {
         description="Explore SatvAikya's full collection of handcrafted wooden decor — sacred art, pooja decor, trays, home decor, DIY kits, kids collection, return gifts, wall art, corporate gifts and money banks."
         path="/collections"
       />
-      <section className="pt-28 pb-8 md:pt-40 md:pb-12">
+      <section className="relative pt-12 pb-10 md:pt-16 md:pb-12">
         <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 text-center">
           <span className="text-xs uppercase tracking-[0.25em] text-brand font-medium">The Collections</span>
           <h1 className="mt-3 font-display text-3xl sm:text-4xl md:text-6xl">Handcrafted with intent</h1>
