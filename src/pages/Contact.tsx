@@ -139,6 +139,27 @@ export default function Contact() {
                 <textarea required name="message" rows={5} className="mt-1 w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:border-brand resize-none" />
               </label>
               {/* <button type="submit" className="w-full btn-luxury px-6 py-3.5 rounded-full font-medium">Send Message</button> */}
+              <label className="flex items-start gap-2 text-sm leading-6">
+                <input
+                  type="checkbox"
+                  name="privacyConsent"
+                  required
+                  className="mt-1"
+                />
+
+                <span className="text-muted-foreground">
+                  I agree to the{" "}
+                  <a
+                    href="/privacy-policy"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-medium text-primary hover:underline"
+                  >
+                    Privacy Policy
+                  </a>{" "}
+                  and consent to SatvAikya using my information to respond to my enquiry.
+                </span>
+              </label>
               <button
                 type="submit"
                 disabled={loading}

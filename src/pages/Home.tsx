@@ -83,7 +83,6 @@ export default function Home() {
           .select("*")
           .order("created_at", { ascending: true });
 
-        console.log("Categories from Supabase:", data);
 
 
         if (error) throw error;
@@ -121,8 +120,7 @@ export default function Home() {
         );
 
       setInstagramProducts(instagramProducts);
-      console.log("Instagram products", instagramProducts)
-    };
+   };
 
     loadCategories();
   }, []);
@@ -272,9 +270,9 @@ export default function Home() {
                     >
                       <Link
                         to={`/collections/${getCategoryPath(c)}`}
-                        className="group block overflow-hidden rounded-2xl bg-card border border-border shadow-sm hover:shadow-xl transition-all duration-500"
+                        className="group block overflow-hidden rounded-2xl bg-card shadow-sm hover:shadow-xl transition-all duration-500"
                       >
-                        <div className="aspect-square bg-white flex items-center justify-center overflow-hidden p-4">
+                        <div className="aspect-square bg-transparent flex items-center justify-center overflow-hidden p-0">
                           <img
                             src={
                               c.image_path
@@ -282,7 +280,7 @@ export default function Home() {
                                 : c.image
                             }
                             alt={c.image_alt || c.name}
-                            className="max-h-full max-w-full object-contain transition-transform duration-700 group-hover:scale-105"
+                            className="block h-full w-full object-contain transition-transform duration-700 group-hover:scale-105"
                             loading="lazy"
                             width={800}
                             height={800}
@@ -313,7 +311,7 @@ export default function Home() {
             {/* WHY CHOOSE US */}
             <section className="relative overflow-hidden py-20 md:py-28 bg-[oklch(0.95_0.01_85)]">
               <CraftedPaperTexture />
-              <CraftedDecorativeLayer/>
+              <CraftedDecorativeLayer />
               <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div className="text-center max-w-2xl mx-auto mb-14">
                   <span className="text-xs uppercase tracking-[0.25em] text-brand font-medium">
@@ -450,17 +448,17 @@ export default function Home() {
                         className="group block aspect-[4/5] overflow-hidden rounded-xl relative bg-white shadow-sm hover:shadow-xl transition-all duration-300"
                       >
                         <img
-  src={
-    supabase.storage
-      .from("product-images")
-      .getPublicUrl(image.storage_path).data.publicUrl
-  }
-  alt={product.name}
-  loading="lazy"
-  width={600}
-  height={750}
-  className="h-full w-full object-contain bg-white transition-transform duration-500 group-hover:scale-105"
-/>
+                          src={
+                            supabase.storage
+                              .from("product-images")
+                              .getPublicUrl(image.storage_path).data.publicUrl
+                          }
+                          alt={product.name}
+                          loading="lazy"
+                          width={600}
+                          height={750}
+                          className="h-full w-full object-contain bg-white transition-transform duration-500 group-hover:scale-105"
+                        />
 
                         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors duration-300 flex items-center justify-center">
                           <Instagram
@@ -581,19 +579,19 @@ export default function Home() {
                           form.reset();
 
                           // Optional WhatsApp redirect after email
-//                           const text = `New enquiry from SatvAikya website
+                          //                           const text = `New enquiry from SatvAikya website
 
-// Name: ${data.get("name")}
-// Phone: ${data.get("phone")}
-// Email: ${data.get("email")}
-// Message: ${data.get("message")}`;
+                          // Name: ${data.get("name")}
+                          // Phone: ${data.get("phone")}
+                          // Email: ${data.get("email")}
+                          // Message: ${data.get("message")}`;
 
-//                           window.open(
-//                             `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
-//                               text
-//                             )}`,
-//                             "_blank"
-//                           );
+                          //                           window.open(
+                          //                             `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
+                          //                               text
+                          //                             )}`,
+                          //                             "_blank"
+                          //                           );
                         } catch (error: any) {
                           console.error("EmailJS Error:", error);
 

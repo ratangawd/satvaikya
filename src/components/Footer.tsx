@@ -11,7 +11,6 @@ export default function Footer() {
     async function loadCategories() {
       try {
         const data = await getStoreCategories();
-        console.log("FOOTER CATEGORIES", data);
         setCategories(data);
       } catch (err) {
         console.error("Failed to load footer categories", err);
@@ -52,6 +51,23 @@ export default function Footer() {
             <li><Link to="/collections" className="hover:text-gold transition">Collections</Link></li>
             <li><Link to="/blog" className="hover:text-gold transition">Blog</Link></li>
             <li><Link to="/contact" className="hover:text-gold transition">Contact</Link></li>
+            <li><Link to="/cookie-policy" className="hover:text-gold transition">Cookie Policy</Link></li>
+            <li>
+              <Link
+                to="/privacy-policy"
+                className="hover:text-gold transition"
+              >
+                Privacy Policy
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/terms-and-conditions"
+                className="hover:text-gold transition"
+              >
+                Terms & Conditions
+              </Link>
+            </li>
           </ul>
         </div>
 

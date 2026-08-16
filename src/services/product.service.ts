@@ -23,7 +23,6 @@ export async function getProducts(): Promise<Product[]> {
 
     if (error) throw error;
         
-    console.log(data);
     return data as Product[];
 }
 

@@ -165,11 +165,26 @@ export default function Register() {
                             className="mt-1"
                         />
 
-                        <span>
+                        <span className="leading-6">
                             I agree to the{" "}
-                            <span className="font-medium text-primary">
+                            <Link
+                                to="/terms-and-conditions"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="font-medium text-primary hover:underline"
+                            >
                                 Terms & Conditions
-                            </span>
+                            </Link>{" "}
+                            and acknowledge the{" "}
+                            <Link
+                                to="/privacy-policy"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="font-medium text-primary hover:underline"
+                            >
+                                Privacy Policy
+                            </Link>
+                            .
                         </span>
                     </label>
 

@@ -110,22 +110,7 @@ export async function getStoreCategories(): Promise<StoreCategory[]> {
     const mapped: StoreCategory[] = raw.map((category) => {
         const rawProducts = (category.products as Record<string, unknown>[]) ?? [];
 
-        // 🔍 DIAGNOSTIC LOGGING — inspect the actual field values before filtering
-        if (rawProducts.length > 0) {
-            console.log(
-                "CATEGORY:",
-                category.name,
-                "RAW PRODUCT COUNT:",
-                rawProducts.length
-            );
-            console.log("FIRST PRODUCT FULL OBJECT:", JSON.stringify(rawProducts[0], null, 2));
-            console.log(
-                "FIRST PRODUCT KEY FIELDS ->",
-                "status:", rawProducts[0].status,
-                "| is_active:", rawProducts[0].is_active,
-                "| category_id:", rawProducts[0].category_id
-            );
-        }
+
 
         // ⚠️ Filter made resilient: don't assume exact casing/value of `status`,
         // and don't assume `is_active` is always present as a strict boolean.
@@ -235,15 +220,12 @@ export async function getStoreCategory(
 ): Promise<StoreCategory | null> {
 
     const categories = await getStoreCategories();
-    console.log("ALL ROOT CATEGORIES:", categories.map(c => c.slug));
 
     const category = findCategoryBySlugWithAncestors(
         categories,
         categorySlug
     );
 
-    console.log("SEARCHING:", categorySlug);
-    console.log("FOUND CATEGORY:", category);
 
     if (!category) return null;
 

@@ -14,6 +14,7 @@ import ProfileEnquiries from "@/pages/ProfileEnquiries";
 import Enquiries from "./admin/pages/Enquiries";
 import CustomerEnquiries from "./admin/pages/CustomerEnquiries";
 import Infrastructure from "./pages/Infrastructure";
+import CookieConsent from "./components/CookieConsent";
 
 const Home = lazy(() => import("./pages/Home"));
 const About = lazy(() => import("./pages/About"));
@@ -27,6 +28,11 @@ const NotFound = lazy(() => import("./pages/NotFound"));
 const Register = lazy(() => import("./pages/customer/Register"));
 const LoginPage = lazy(() => import("./pages/customer/Login"));
 const Profile = lazy(() => import("./pages/customer/Profile"));
+const CookiePolicy = lazy(() => import("./pages/CookiePolicy"));
+const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
+const TermsAndConditions = lazy(
+  () => import("./pages/TermsAndConditions")
+);
 
 const CategoryOrProductResolver = lazy(
   () => import("./pages/CategoryOrProductResolver")
@@ -90,6 +96,13 @@ export default function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/infrastructure" element={<Infrastructure />} />
+            <Route path="/cookie-policy" element={<CookiePolicy />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route
+              path="/terms-and-conditions"
+              element={<TermsAndConditions />}
+            />
+
 
             <Route
               path="/profile"
@@ -152,5 +165,11 @@ export default function App() {
     </>
   );
 
-  return isAdminRoute ? content : <Layout>{content}</Layout>;
-}
+  return isAdminRoute ? (
+    content
+  ) : (
+    <Layout>
+      {content}
+      <CookieConsent />
+    </Layout>
+  ); }

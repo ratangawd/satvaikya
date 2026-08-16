@@ -112,10 +112,48 @@ export default function Checkout() {
                   <span className="text-sm font-medium">Order notes (optional)</span>
                   <textarea name="notes" rows={3} className="mt-1 w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:border-brand resize-none" />
                 </label>
-                <button type="submit" className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-[#25D366] text-white font-medium hover:opacity-90 transition">
-                  <MessageCircle className="h-4 w-4" /> Place Order via WhatsApp
-                </button>
-                <p className="text-xs text-muted-foreground text-center">Payment is coordinated directly with our team over WhatsApp.</p>
+                    <label className="flex items-start gap-2 text-sm leading-6">
+                      <input
+                        type="checkbox"
+                        name="legalConsent"
+                        required
+                        className="mt-1 h-4 w-4 shrink-0 accent-brand"
+                      />
+
+                      <span className="text-muted-foreground">
+                        I agree to the{" "}
+                        <Link
+                          to="/terms-and-conditions"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="font-medium text-brand hover:underline"
+                        >
+                          Terms & Conditions
+                        </Link>{" "}
+                        and acknowledge the{" "}
+                        <Link
+                          to="/privacy-policy"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="font-medium text-brand hover:underline"
+                        >
+                          Privacy Policy
+                        </Link>
+                        .
+                      </span>
+                    </label>
+
+                    <button
+                      type="submit"
+                      className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-[#25D366] text-white font-medium hover:opacity-90 transition"
+                    >
+                      <MessageCircle className="h-4 w-4" />
+                      Place Order via WhatsApp
+                    </button>
+
+                    <p className="text-xs text-muted-foreground text-center">
+                      Payment is coordinated directly with our team over WhatsApp.
+                    </p>
               </form>
 
               <aside className="bg-card rounded-2xl border border-border p-6 h-fit lg:sticky lg:top-24">

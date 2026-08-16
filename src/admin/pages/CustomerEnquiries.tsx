@@ -146,7 +146,6 @@ function extractCustomerInfo(rawEnquiries: any[], customerId?: string): Customer
         rawEnquiries[0] ??
         {};
 
-    console.log("Raw customer data", rawEnquiries[0]);
 
     const c =
         source.customer ?? source.profiles ?? source.customer_profile ?? source.user ?? {};
