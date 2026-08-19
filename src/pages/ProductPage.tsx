@@ -120,6 +120,7 @@ export default function ProductPage({
   );
 
   const [qty, setQty] = useState(5);
+  const [customQty, setCustomQty] = useState(30);
 
   // Main image currently selected
   const [activeImg, setActiveImg] = useState(0);
@@ -751,44 +752,167 @@ export default function ProductPage({
               ================================================== */}
               <div className="mt-8 space-y-3">
 
-                {/* QUANTITY */}
-                <div className="flex items-center justify-between gap-3">
-                  <span className="text-sm font-medium text-muted-foreground">
-                    Quantity
-                  </span>
-
-                  <div className="inline-flex items-center border border-border rounded-full h-11 shrink-0">
-                    <button
-                      type="button"
-                      onClick={() =>
-                        setQty((q) =>
-                          Math.max(5, q - 5)
-                        )
-                      }
-                      disabled={qty <= 5}
-                      className="h-11 w-11 inline-flex items-center justify-center rounded-l-full hover:bg-muted active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-transparent transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
-                      aria-label="Decrease quantity"
-                    >
-                      <Minus className="h-4 w-4" />
-                    </button>
-
-                    <span className="w-10 text-center text-sm font-medium tabular-nums">
-                      {qty}
+                {/* =================================================
+    QUANTITY
+================================================== */}
+                {/* =================================================
+    QUANTITY
+================================================== */}
+                <div className="space-y-3">
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm font-medium text-muted-foreground">
+                      Quantity
                     </span>
 
+                    <span className="px-2 py-0.5 rounded-md bg-yellow-400 text-black text-xs font-semibold">
+                      {qty} Pcs
+                    </span>
+                  </div>
+
+                  <div className="flex flex-wrap items-center gap-3">
+                    {/* 5 Pcs */}
                     <button
                       type="button"
-                      onClick={() =>
-                        setQty((q) => q + 5)
-                      }
-                      className="h-11 w-11 inline-flex items-center justify-center rounded-r-full hover:bg-muted active:scale-95 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
-                      aria-label="Increase quantity"
+                      onClick={() => setQty(5)}
+                      className={`
+        h-11
+        px-5
+        rounded-md
+        border
+        text-sm
+        font-medium
+        transition-all
+        active:scale-95
+        ${qty === 5
+                          ? "bg-[#1f2937] text-white border-[#1f2937]"
+                          : "bg-white text-muted-foreground border-border hover:border-[#1f2937]"
+                        }
+      `}
                     >
-                      <Plus className="h-4 w-4" />
+                      5 Pcs
                     </button>
+
+                    {/* 10 Pcs */}
+                    <button
+                      type="button"
+                      onClick={() => setQty(10)}
+                      className={`
+        h-11
+        px-5
+        rounded-md
+        border
+        text-sm
+        font-medium
+        transition-all
+        active:scale-95
+        ${qty === 10
+                          ? "bg-[#1f2937] text-white border-[#1f2937]"
+                          : "bg-white text-muted-foreground border-border hover:border-[#1f2937]"
+                        }
+      `}
+                    >
+                      10 Pcs
+                    </button>
+
+                    {/* 25 Pcs */}
+                    <button
+                      type="button"
+                      onClick={() => setQty(25)}
+                      className={`
+        h-11
+        px-5
+        rounded-md
+        border
+        text-sm
+        font-medium
+        transition-all
+        active:scale-95
+        ${qty === 25
+                          ? "bg-[#1f2937] text-white border-[#1f2937]"
+                          : "bg-white text-muted-foreground border-border hover:border-[#1f2937]"
+                        }
+      `}
+                    >
+                      25 Pcs
+                    </button>
+
+                    {/* Custom quantity - ALWAYS VISIBLE */}
+                    <div
+                      className="
+        h-11
+        inline-flex
+        items-center
+        rounded-md
+        border
+        border-[#1f2937]
+        bg-[#1f2937]
+        text-white
+        overflow-hidden
+      "
+                    >
+                      {/* Decrease custom quantity */}
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setCustomQty((q) => Math.max(30, q - 5))
+                        }
+                        className="
+          h-full
+          w-9
+          flex
+          items-center
+          justify-center
+          hover:bg-white/10
+          transition-colors
+          active:scale-95
+        "
+                        aria-label="Decrease custom quantity"
+                      >
+                        −
+                      </button>
+
+                      {/* Custom quantity */}
+                      <button
+                        type="button"
+                        onClick={() => setQty(customQty)}
+                        className={`
+          h-full
+          min-w-[70px]
+          px-2
+          text-sm
+          font-medium
+          text-center
+          transition-colors
+          ${qty === customQty
+                            ? "bg-[#1f2937]"
+                            : "bg-[#1f2937]"
+                          }
+        `}
+                      >
+                        {customQty} Pcs
+                      </button>
+
+                      {/* Increase custom quantity */}
+                      <button
+                        type="button"
+                        onClick={() => setCustomQty((q) => q + 5)}
+                        className="
+          h-full
+          w-9
+          flex
+          items-center
+          justify-center
+          hover:bg-white/10
+          transition-colors
+          active:scale-95
+        "
+                        aria-label="Increase custom quantity"
+                      >
+                        +
+                      </button>
+                    </div>
                   </div>
                 </div>
-
                 {/* =================================================
                     ADD TO CART / AMAZON
                 ================================================== */}
