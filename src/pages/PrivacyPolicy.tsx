@@ -400,12 +400,12 @@ const PrivacyPolicy = () => {
                 Home
               </Link>
 
-              <Link
+              {/* <Link
                 to="/cookie-policy"
                 className="text-gray-500 transition hover:text-[#355E3B]"
               >
                 Cookie Policy
-              </Link>
+              </Link> */}
 
               <Link
                 to="/contact"

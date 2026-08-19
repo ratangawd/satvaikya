@@ -57,7 +57,7 @@ export default function Footer() {
             <li><Link to="/collections" className="hover:text-gold transition">Collections</Link></li>
             <li><Link to="/blog" className="hover:text-gold transition">Blog</Link></li>
             <li><Link to="/contact" className="hover:text-gold transition">Contact</Link></li>
-            <li><Link to="/cookie-policy" className="hover:text-gold transition">Cookie Policy</Link></li>
+            {/* <li><Link to="/cookie-policy" className="hover:text-gold transition">Cookie Policy</Link></li> */}
             <li>
               <Link
                 to="/privacy-policy"

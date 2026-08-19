@@ -105,7 +105,14 @@ export default function About() {
         </div>
       </section>
 
-      <section className="py-16 md:py-24 bg-brand text-white">
+      <section
+        className="py-16 md:py-24 text-white"
+        style={{
+          backgroundImage: "url('/green-texture.png')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      >
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 grid md:grid-cols-2 gap-12">
           <div>
             <span className="text-xs uppercase tracking-[0.25em] text-gold font-medium">Manufacturing</span>

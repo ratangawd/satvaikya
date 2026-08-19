@@ -14,7 +14,7 @@ import ProfileEnquiries from "@/pages/ProfileEnquiries";
 import Enquiries from "./admin/pages/Enquiries";
 import CustomerEnquiries from "./admin/pages/CustomerEnquiries";
 import Infrastructure from "./pages/Infrastructure";
-import CookieConsent from "./components/CookieConsent";
+// import CookieConsent from "./components/CookieConsent";
 
 const Home = lazy(() => import("./pages/Home"));
 const About = lazy(() => import("./pages/About"));
@@ -96,7 +96,7 @@ export default function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/infrastructure" element={<Infrastructure />} />
-            <Route path="/cookie-policy" element={<CookiePolicy />} />
+            {/* <Route path="/cookie-policy" element={<CookiePolicy />} /> */}
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route
               path="/terms-and-conditions"
@@ -170,6 +170,6 @@ export default function App() {
   ) : (
     <Layout>
       {content}
-      <CookieConsent />
+      {/* <CookieConsent /> */}
     </Layout>
   ); }

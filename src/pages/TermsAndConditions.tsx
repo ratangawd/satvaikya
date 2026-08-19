@@ -315,7 +315,7 @@ const TermsAndConditions = () => {
               information.
             </p>
 
-            <p className="mt-4 leading-8 text-gray-600">
+            {/* <p className="mt-4 leading-8 text-gray-600">
               Our use of cookies and similar technologies is described in our{" "}
               <Link
                 to="/cookie-policy"
@@ -324,7 +324,7 @@ const TermsAndConditions = () => {
                 Cookie Policy
               </Link>
               .
-            </p>
+            </p> */}
           </section>
 
           {/* 16 */}
