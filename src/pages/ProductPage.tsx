@@ -1,16 +1,3 @@
-/**
- * ProductPage.tsx
- *
- * Breadcrumb uses category.ancestors to show the full path.
- *
- * Gallery:
- * - Large main product image
- * - Maximum 4 thumbnails visible at a time
- * - Previous / next arrows
- * - Mobile swipe support
- * - Supports any number of product images
- */
-
 import { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import {
@@ -539,14 +526,14 @@ export default function ProductPage({
                         : "Add to wishlist"
                     }
                     className={`absolute top-3 right-3 z-10 h-10 w-10 inline-flex items-center justify-center rounded-full backdrop-blur-md shadow-sm transition-all active:scale-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 ${inWishlist
-                        ? "bg-brand text-white"
-                        : "bg-white/80 text-foreground hover:bg-white"
+                      ? "bg-brand text-white"
+                      : "bg-white/80 text-foreground hover:bg-white"
                       }`}
                   >
                     <Heart
                       className={`h-4.5 w-4.5 ${inWishlist
-                          ? "fill-white"
-                          : ""
+                        ? "fill-white"
+                        : ""
                         }`}
                     />
                   </button>
@@ -838,17 +825,19 @@ export default function ProductPage({
 
                     {/* Custom quantity - ALWAYS VISIBLE */}
                     <div
-                      className="
+                      className={`
         h-11
         inline-flex
         items-center
         rounded-md
         border
-        border-[#1f2937]
-        bg-[#1f2937]
-        text-white
         overflow-hidden
-      "
+        transition-all
+        ${qty === customQty
+                          ? "border-[#1f2937] bg-[#1f2937] text-white"
+                          : "border-border bg-white text-muted-foreground hover:border-[#1f2937]"
+                        }
+      `}
                     >
                       {/* Decrease custom quantity */}
                       <button
@@ -862,7 +851,7 @@ export default function ProductPage({
           flex
           items-center
           justify-center
-          hover:bg-white/10
+          hover:bg-black/5
           transition-colors
           active:scale-95
         "
@@ -884,8 +873,8 @@ export default function ProductPage({
           text-center
           transition-colors
           ${qty === customQty
-                            ? "bg-[#1f2937]"
-                            : "bg-[#1f2937]"
+                            ? "bg-[#1f2937] text-white"
+                            : "bg-white text-muted-foreground"
                           }
         `}
                       >
@@ -902,7 +891,7 @@ export default function ProductPage({
           flex
           items-center
           justify-center
-          hover:bg-white/10
+          hover:bg-black/5
           transition-colors
           active:scale-95
         "
@@ -918,9 +907,9 @@ export default function ProductPage({
                 ================================================== */}
                 <div
                   className={`grid gap-3 ${product.amazonEnabled &&
-                      product.amazonUrl
-                      ? "grid-cols-2"
-                      : "grid-cols-1"
+                    product.amazonUrl
+                    ? "grid-cols-2"
+                    : "grid-cols-1"
                     }`}
                 >
                   <button
@@ -1182,7 +1171,8 @@ export default function ProductPage({
         z-[99999]
         w-screen
         h-[100dvh]
-        bg-black
+        bg-black/75
+        md:bg-black
         flex
         items-center
         justify-center
@@ -1323,14 +1313,13 @@ export default function ProductPage({
                 className="
           relative
           w-screen
-          h-[100dvh]
+          h-auto
           flex
           items-center
           justify-center
-          px-16
-          py-12
-          sm:px-20
-          sm:py-16
+          px-0
+          py-0
+          md:h-[100dvh]
           md:px-24
           md:py-20
         "
@@ -1342,12 +1331,15 @@ export default function ProductPage({
                   draggable={false}
                   className="
             block
-            max-w-full
-            max-h-full
-            w-auto
+            w-screen
+            max-w-[100vw]
             h-auto
+            max-h-[100dvh]
             object-contain
             select-none
+            md:w-auto
+            md:max-w-full
+            md:max-h-full
           "
                 />
               </motion.div>
@@ -1425,6 +1417,7 @@ export default function ProductPage({
           open={enquiryOpen}
           onClose={() => setEnquiryOpen(false)}
           product={product}
+          initialQuantity={qty}
         />
       </PageTransition>
     </div>

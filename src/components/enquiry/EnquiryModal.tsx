@@ -11,17 +11,20 @@ interface EnquiryModalProps {
         id: string;
         name: string;
     };
+    initialQuantity: number;
 }
 
 export default function EnquiryModal({
     open,
     onClose,
     product,
+    initialQuantity,
 }: EnquiryModalProps) {
     const { user, customer } = useCustomerAuth();
 
-    const [quantity, setQuantity] = useState(5);
+    const [quantity, setQuantity] = useState(initialQuantity);
     const [submitting, setSubmitting] = useState(false);
+    const [messageManuallyEdited, setMessageManuallyEdited] = useState(false);
 
     const [name, setName] = useState("");
     const [phone, setPhone] = useState("");
@@ -29,14 +32,16 @@ export default function EnquiryModal({
     const [city, setCity] = useState("");
     const [message, setMessage] = useState("");
 
-    
+
 
     useEffect(() => {
 
-        
+
         if (!open) return;
 
-        setQuantity(5);
+        const selectedQuantity = Math.max(5, initialQuantity || 5);
+
+        setQuantity(selectedQuantity);
 
         setName(
             `${customer?.first_name ?? ""} ${customer?.last_name ?? ""}`.trim()
@@ -45,8 +50,19 @@ export default function EnquiryModal({
         setPhone(customer?.phone ?? "");
         setEmail(user?.email ?? "");
         setCity("");
-        setMessage("");
-    }, [open, customer, user]);
+        setMessage(
+            `Hi, I'm interested in ${product.name} and would like to enquire about ${selectedQuantity} pcs. Please share the details, pricing, and delivery information.`
+        );
+        setMessageManuallyEdited(false);
+    }, [open, customer, user, initialQuantity, product.name]);
+
+    useEffect(() => {
+        if (!open || messageManuallyEdited) return;
+
+        setMessage(
+            `Hi, I'm interested in ${product.name} and would like to enquire about ${quantity} pcs. Please share the details, pricing, and delivery information.`
+        );
+    }, [quantity, open, product.name, messageManuallyEdited]);
 
     async function handleSubmit() {
         if (!name.trim()) {
@@ -56,6 +72,17 @@ export default function EnquiryModal({
 
         if (!phone.trim()) {
             alert("Please enter your phone number.");
+            return;
+        }
+
+        if (!email.trim()) {
+            alert("Please enter your email address.");
+            return;
+        }
+
+        const emailIsValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+        if (!emailIsValid) {
+            alert("Please enter a valid email address.");
             return;
         }
 
@@ -147,6 +174,7 @@ export default function EnquiryModal({
 
                     <input
                         className="w-full rounded-lg border p-3"
+                        required
                         placeholder="Name"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
@@ -154,14 +182,18 @@ export default function EnquiryModal({
 
                     <input
                         className="w-full rounded-lg border p-3"
-                        placeholder="Phone"
+                        type="tel"
+                        required
+                        placeholder="Phone *"
                         value={phone}
                         onChange={(e) => setPhone(e.target.value)}
                     />
 
                     <input
                         className="w-full rounded-lg border p-3"
-                        placeholder="Email"
+                        type="email"
+                        required
+                        placeholder="Email *"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                     />
@@ -178,7 +210,10 @@ export default function EnquiryModal({
                         className="w-full rounded-lg border p-3"
                         placeholder="Tell us your requirement..."
                         value={message}
-                        onChange={(e) => setMessage(e.target.value)}
+                        onChange={(e) => {
+                            setMessage(e.target.value);
+                            setMessageManuallyEdited(true);
+                        }}
                     />
 
                 </div>
