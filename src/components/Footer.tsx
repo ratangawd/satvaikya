@@ -20,7 +20,13 @@ export default function Footer() {
     loadCategories();
   }, []);
   return (
-    <footer className="mt-24 bg-[oklch(0.22_0.02_150)] text-white">
+    // <footer className="mt-24 bg-[oklch(0.22_0.02_150)] text-white">
+    <footer
+      className="mt-24 bg-cover bg-center bg-no-repeat text-white"
+      style={{
+        backgroundImage: "url('/green-texture.png')",
+      }}
+    >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 grid gap-12 md:grid-cols-2 lg:grid-cols-4">
         <div>
           <div className="flex items-center gap-2">

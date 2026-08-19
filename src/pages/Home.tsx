@@ -167,7 +167,7 @@ export default function Home() {
           "@type": "Organization",
           name: "SatvAikya Innovations",
           url: "/",
-          logo: "/favicon.ico",
+          logo: "/Favicon.png",
           contactPoint: {
             "@type": "ContactPoint",
             telephone: "+91-98664-10523",
@@ -392,7 +392,15 @@ export default function Home() {
             </section>
 
             {/* TESTIMONIALS */}
-            <section className="py-20 md:py-28 bg-brand text-white">
+            {/* <section className="py-20 md:py-28  bg-[#345E22]  text-white"> */}
+           
+            <section
+              className="py-20 md:py-28 text-white bg-cover bg-center bg-no-repeat"
+              style={{
+                backgroundImage: "url('/green-texture.png')",
+              }}
+            >
+
               <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div className="text-center max-w-2xl mx-auto mb-12">
                   <span className="text-xs uppercase tracking-[0.25em] text-gold font-medium">
@@ -539,11 +547,29 @@ export default function Home() {
                       </div>
                     ))}
 
+                    {/* <a
+                      href={`https://wa.me/${WHATSAPP_NUMBER}`}
+                      target="_blank"
+                      rel="noopener"
+                      className="w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full text-white font-medium transition hover:opacity-90"
+                      style={{
+                        backgroundImage: "url('/green-texture.png')",
+                        backgroundSize: "cover",
+                        backgroundPosition: "center",
+                      }}
+                    >
+                      <MessageCircle className="h-4 w-4" />
+                      Chat on WhatsApp
+                    </a> */}
+
                     <a
                       href={`https://wa.me/${WHATSAPP_NUMBER}`}
                       target="_blank"
                       rel="noopener"
-                      className="w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-[#25D366] text-white font-medium hover:opacity-90 transition"
+                      className="w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full text-white font-medium transition hover:opacity-90"
+                      style={{
+                        backgroundColor: "#97B002",
+                      }}
                     >
                       <MessageCircle className="h-4 w-4" />
                       Chat on WhatsApp
@@ -667,7 +693,10 @@ export default function Home() {
                       <button
                         type="submit"
                         disabled={loading}
-                        className="w-full btn-luxury px-6 py-3.5 rounded-full font-medium disabled:opacity-70"
+                        className="w-full px-6 py-3.5 rounded-full font-medium text-white transition hover:opacity-90 disabled:opacity-70"
+                        style={{
+                          backgroundColor: "#97B002",
+                        }}
                       >
                         {loading ? "Sending..." : "Send Message"}
                       </button>

@@ -98,10 +98,10 @@ export default function Contact() {
               </div>
             ))}
             <div className="flex gap-3">
-              <a href={`https://wa.me/${WHATSAPP_NUMBER}`} target="_blank" rel="noopener" className="flex-1 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-[#25D366] text-white font-medium hover:opacity-90 transition">
+              <a href={`https://wa.me/${WHATSAPP_NUMBER}`} target="_blank" rel="noopener" className="flex-1 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-[#97B002] text-white font-medium hover:bg-[#869C02] transition">
                 <MessageCircle className="h-4 w-4" /> WhatsApp
               </a>
-              <a href="tel:+919866410523" className="flex-1 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full btn-luxury font-medium">
+              <a href="tel:+919866410523" className="flex-1 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-[#97B002] text-white font-medium hover:bg-[#869C02] transition">
                 <Phone className="h-4 w-4" /> Call
               </a>
             </div>
@@ -163,7 +163,7 @@ export default function Contact() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full btn-luxury px-6 py-3.5 rounded-full font-medium disabled:opacity-70"
+                className="w-full bg-[#97B002] text-white px-6 py-3.5 rounded-full font-medium hover:bg-[#869C02] transition disabled:opacity-70"
               >
                 {loading ? "Sending..." : "Send Message"}
               </button>
