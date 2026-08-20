@@ -107,7 +107,7 @@ export default function ProductPage({
   );
 
   const [qty, setQty] = useState(5);
-  const [customQty, setCustomQty] = useState(30);
+  const [customQty, setCustomQty] = useState(25);
 
   // Main image currently selected
   const [activeImg, setActiveImg] = useState(0);
@@ -801,10 +801,10 @@ export default function ProductPage({
                       10 Pcs
                     </button>
 
-                    {/* 25 Pcs */}
+                    {/* 15 Pcs */}
                     <button
                       type="button"
-                      onClick={() => setQty(25)}
+                      onClick={() => setQty(15)}
                       className={`
         h-11
         px-5
@@ -814,14 +814,37 @@ export default function ProductPage({
         font-medium
         transition-all
         active:scale-95
-        ${qty === 25
+        ${qty === 15
                           ? "bg-[#1f2937] text-white border-[#1f2937]"
                           : "bg-white text-muted-foreground border-border hover:border-[#1f2937]"
                         }
       `}
                     >
-                      25 Pcs
+                      15 Pcs
                     </button>
+
+                    {/* 20 Pcs */}
+                    <button
+                      type="button"
+                      onClick={() => setQty(20)}
+                      className={`
+        h-11
+        px-5
+        rounded-md
+        border
+        text-sm
+        font-medium
+        transition-all
+        active:scale-95
+        ${qty === 20
+                          ? "bg-[#1f2937] text-white border-[#1f2937]"
+                          : "bg-white text-muted-foreground border-border hover:border-[#1f2937]"
+                        }
+      `}
+                    >
+                      20 Pcs
+                    </button>
+
 
                     {/* Custom quantity - ALWAYS VISIBLE */}
                     <div
@@ -843,7 +866,7 @@ export default function ProductPage({
                       <button
                         type="button"
                         onClick={() =>
-                          setCustomQty((q) => Math.max(30, q - 5))
+                          setCustomQty((q) => Math.max(25, q - 5))
                         }
                         className="
           h-full

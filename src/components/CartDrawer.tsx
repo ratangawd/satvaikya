@@ -50,7 +50,7 @@ export default function CartDrawer() {
                 <ShoppingBag className="h-10 w-10 text-muted-foreground" />
                 <p className="font-display text-lg">Your cart is empty</p>
                 <p className="text-sm text-muted-foreground">Discover our collections and add your first piece.</p>
-                <Link to="/collections" onClick={closeCart} className="mt-2 btn-luxury px-6 py-3 rounded-full text-sm font-medium">
+                <Link to="/collections" onClick={closeCart} className="mt-2 px-6 py-3 rounded-full bg-[#97B002] text-white text-sm font-medium hover:opacity-90 transition">
                   Browse Collections
                 </Link>
               </div>
@@ -98,15 +98,19 @@ export default function CartDrawer() {
                     <button onClick={closeCart} className="px-5 py-3 rounded-full border border-border text-sm font-medium hover:bg-muted transition">
                       Continue Shopping
                     </button>
-                    <Link to="/checkout" onClick={closeCart} className="btn-luxury px-5 py-3 rounded-full text-sm font-medium text-center">
-                      Checkout
-                    </Link>
+                      <Link
+                        to="/checkout"
+                        onClick={closeCart}
+                        className="px-5 py-3 rounded-full bg-[#97B002] text-white text-sm font-medium text-center hover:opacity-90 transition"
+                      >
+                        Checkout
+                      </Link>
                   </div>
                   <a
                     href={whatsappHref()}
                     target="_blank"
                     rel="noopener"
-                    className="block text-center px-5 py-3 rounded-full bg-[#25D366] text-white text-sm font-medium hover:opacity-90 transition"
+                      className="block text-center px-5 py-3 rounded-full bg-[#97B002] text-white text-sm font-medium hover:opacity-90 transition"
                   >
                     Order on WhatsApp
                   </a>

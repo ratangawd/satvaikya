@@ -295,7 +295,7 @@ export default function Navbar() {
             >
               <Heart className="h-5 w-5" />
               {wishCount > 0 && (
-                <span className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-brand text-[11px] font-semibold text-white flex items-center justify-center">
+                <span className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-[#97B002] text-[11px] font-semibold text-white flex items-center justify-center">
                   {wishCount}
                 </span>
               )}

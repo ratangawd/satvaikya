@@ -5,6 +5,7 @@ import infra from "@/assets/infrastructure.png";
 import manufacture from "@/assets/manufacture.png";
 import production from "@/assets/production.png";
 import raw from "@/assets/raw.png";
+import quality from "@/assets/quality.png";
 import packaging from "@/assets/packaging.png";
 import warehouse from "@/assets/warehouse.png";
 
@@ -38,7 +39,7 @@ const infrastructure = [
         category: "QUALITY",
         description:
             "Our quality control process ensures every wooden product meets our standards for precision, finish, durability and overall craftsmanship.",
-        image: "/images/infrastructure/quality-control.jpg",
+        image: quality,
     },
     {
         title: "Packaging Unit",
@@ -66,10 +67,12 @@ export default function Infrastructure() {
             />
 
             {/* HERO */}
+            
+
             <section className="pt-12 pb-14 md:pt-16 md:pb-20">
                 <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 text-center">
                     <span className="text-xs uppercase tracking-[0.25em] text-brand font-medium">
-                        Infrastructure
+                        SATVAIKYA – One-Stop Gifting & Manufacturing Solution
                     </span>
 
                     <h1 className="mt-3 font-display text-4xl md:text-6xl leading-tight">
@@ -87,64 +90,82 @@ export default function Infrastructure() {
             </section>
 
             {/* FEATURED INFRASTRUCTURE */}
+
+            {/* FEATURED INFRASTRUCTURE */}
             <section className="pb-16 md:pb-20">
-                <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                    <div className="relative overflow-hidden rounded-3xl border border-border bg-card group">
-                        <div className="grid grid-cols-1 lg:grid-cols-2">
-                            {/* IMAGE */}
-                            <div className="aspect-[4/3] lg:aspect-auto lg:min-h-[500px] overflow-hidden">
-                                <img
-                                    src={infra}
-                                    alt="SatvAikya infrastructure"
-                                    width={1200}
-                                    height={900}
-                                    className="h-full w-full object-cover transition-transform duration-1000 group-hover:scale-105"
-                                />
+
+                {/* FULL WIDTH IMAGE - SAME RATIO AS HOME HERO */}
+                <div className="relative w-full aspect-[16/6.5] overflow-hidden">
+                    <img
+                        src={infra}
+                        alt="SatvAikya infrastructure"
+                        className="absolute inset-0 h-full w-full object-cover object-center"
+                        loading="eager"
+                    />
+                </div>
+
+              
+
+               
+                {/* CONTENT BELOW IMAGE */}
+                <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-10 md:mt-14">
+                    <div className="max-w-5xl mx-auto">
+                        <span className="text-[11px] uppercase tracking-[0.2em] text-gold">
+                            Our Infrastructure
+                        </span>
+
+                        <h2 className="mt-3 font-display text-3xl md:text-4xl">
+                            Where ideas become reality
+                        </h2>
+
+                        <p className="mt-5 text-muted-foreground leading-relaxed">
+                            SATVAIKYA is a creative manufacturing and gifting company specializing in unique gifts, corporate gifting, home decor, pooja decor, return gifts, and customized products. We combine modern manufacturing technology with creative design to deliver products that are precise, attractive, customizable, and made to suit every occasion and requirement.
+                        </p>
+
+                        <h2 className="mt-3 font-display text-3xl md:text-4xl">
+                            Our Manufacturing Works
+                        </h2>
+
+                        <p className="mt-4 text-muted-foreground leading-relaxed">
+                            We use a range of advanced manufacturing processes to create high-quality, customized products with precision and consistency. Our acrylic bending process uses controlled heat technology to create customized acrylic shapes, curves, stands, displays, and decorative products.
+                        </p>
+
+                        <p className="mt-4 text-muted-foreground leading-relaxed">
+                            Photo frame cutting and pinning ensures accurate dimensions, clean edges, and strong assembly. Our bandsaw cutting process enables precise cutting of wood, MDF, and other materials into different sizes and shapes.
+                        </p>
+
+                        <p className="mt-4 text-muted-foreground leading-relaxed">
+                            while the planner machine smoothens and levels wooden surfaces to provide consistent thickness and a clean base for further production. With CNC cutting and carving, we achieve precise cutting, carving, engraving, and intricate customized designs with excellent accuracy. Our UV printing technology delivers vibrant, high-quality, and durable prints directly onto suitable materials such as acrylic, MDF, and wood.
+                        </p>
+
+                        <p className="mt-4 text-muted-foreground leading-relaxed">
+                            Laser cutting and engraving allows us to create detailed cuts, engravings, lettering, patterns, and personalized designs with high precision. Finally, our sanding process smoothens surfaces and edges, giving every product a clean, refined, and professional finish.
+                        </p>
+
+                   
+                        <h2 className="mt-3 font-display text-3xl md:text-4xl">
+                            🎁 Your One-Stop Gifting Solution
+                        </h2>
+                           
+                        <p className="mt-4 text-muted-foreground leading-relaxed">
+                            At SATVAIKYA, we bring design, manufacturing, customization, finishing, and gifting together under one roof. Whether you need personalized gifts, employee gifts, corporate gifts, return gifts, festive gifts, event merchandise, or customized décor, we can help transform your idea into a finished product.
+                        </p>
+
+                        <div className="mt-7 flex flex-wrap gap-3">
+                            <div className="rounded-full border border-border px-4 py-2 text-sm">
+                                Precision Craftsmanship
                             </div>
 
-                            {/* CONTENT */}
-                            <div className="flex items-center p-7 md:p-10 lg:p-14">
-                                <div>
-                                    <span className="text-[11px] uppercase tracking-[0.2em] text-gold">
-                                        Our Infrastructure
-                                    </span>
+                            <div className="rounded-full border border-border px-4 py-2 text-sm">
+                                Quality Focused
+                            </div>
 
-                                    <h2 className="mt-3 font-display text-3xl md:text-4xl">
-                                        Where ideas become reality
-                                    </h2>
+                            <div className="rounded-full border border-border px-4 py-2 text-sm">
+                                Organized Production
+                            </div>
 
-                                    <p className="mt-5 text-muted-foreground leading-relaxed">
-                                        Our infrastructure brings together thoughtful design, skilled craftsmanship, and modern manufacturing to create sustainable wooden décor for contemporary Indian homes. From sacred art and gifting to DIY kits, wall art, and everyday objects, every product takes shape with care and attention to detail.
-                                    </p>
-
-                                    <p className="mt-4 text-muted-foreground leading-relaxed">
-                                        Our facility is organized across dedicated areas for raw material storage, precision cutting, production, finishing, quality inspection, packaging, and warehousing. This structured process helps us maintain consistency while preserving the craftsmanship and character behind every SatvAikya creation.
-                                    </p>
-
-                                    <p className="mt-4 text-muted-foreground leading-relaxed">
-                                        With the right tools, responsible material practices, and a passionate team, we transform creative ideas into beautifully crafted wooden products made to last.
-                                    </p>
-
-                                   
-
-                                    <div className="mt-7 flex flex-wrap gap-3">
-
-                                        <div className="rounded-full border border-border px-4 py-2 text-sm">
-                                            Precision Craftsmanship
-                                        </div>
-                                        <div className="rounded-full border border-border px-4 py-2 text-sm">
-                                            Quality Focused
-                                        </div>
-
-                                        <div className="rounded-full border border-border px-4 py-2 text-sm">
-                                            Organized Production
-                                        </div>
-
-                                        <div className="rounded-full border border-border px-4 py-2 text-sm">
-                                            Efficient Operations
-                                        </div>
-                                    </div>
-                                </div>
+                            <div className="rounded-full border border-border px-4 py-2 text-sm">
+                                Efficient Operations
                             </div>
                         </div>
                     </div>
@@ -388,9 +409,17 @@ export default function Infrastructure() {
             </section> */}
 
             {/* CTA */}
+
             <section className="py-16 md:py-24">
                 <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-                    <div className="rounded-3xl bg-brand text-white px-6 py-12 md:px-12 md:py-16 text-center">
+                    <div
+                        className="rounded-3xl text-white px-6 py-12 md:px-12 md:py-16 text-center"
+                        style={{
+                            backgroundImage: "url('/green-texture.png')",
+                            backgroundSize: "cover",
+                            backgroundPosition: "center",
+                        }}
+                    >
                         <span className="text-xs uppercase tracking-[0.25em] opacity-80">
                             Let's Work Together
                         </span>

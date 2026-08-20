@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
-import { Instagram, Facebook, Mail, Phone, MapPin } from "lucide-react";
+import { Instagram, Facebook, Mail, Phone, MapPin, Youtube } from "lucide-react";
+import { FaWhatsapp } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import { getStoreCategories } from "@/services/store.service";
 import { getCategoryUrl } from "@/services/store.service";
@@ -40,11 +41,34 @@ export default function Footer() {
             sacred art, DIY kits and thoughtful gifting for the modern Indian home.
           </p>
           <div className="mt-6 flex gap-3">
-            <a href="https://instagram.com" aria-label="Instagram" className="h-9 w-9 rounded-full bg-white/10 hover:bg-gold transition inline-flex items-center justify-center">
+            <a href="https://instagram.com"
+            target="_blank"
+  rel="noopener noreferrer" aria-label="Instagram" className="h-9 w-9 rounded-full bg-white/10 hover:bg-gold transition inline-flex items-center justify-center">
               <Instagram className="h-4 w-4" />
             </a>
-            <a href="https://facebook.com" aria-label="Facebook" className="h-9 w-9 rounded-full bg-white/10 hover:bg-gold transition inline-flex items-center justify-center">
+            <a href="https://facebook.com"
+            target="_blank"
+  rel="noopener noreferrer" aria-label="Facebook" className="h-9 w-9 rounded-full bg-white/10 hover:bg-gold transition inline-flex items-center justify-center">
               <Facebook className="h-4 w-4" />
+            </a>
+            <a
+              href="https://youtube.com/@Satvaikya"
+              target="_blank"
+  rel="noopener noreferrer"
+              aria-label="YouTube"
+              className="h-9 w-9 rounded-full bg-white/10 hover:bg-gold transition inline-flex items-center justify-center"
+            >
+              <Youtube className="h-4 w-4" />
+            </a>
+
+            <a
+              href="https://wa.me/+919866410523"
+              target="_blank"
+  rel="noopener noreferrer"
+              aria-label="WhatsApp"
+              className="h-9 w-9 rounded-full bg-white/10 hover:bg-gold transition inline-flex items-center justify-center"
+            >
+              <FaWhatsapp className="h-4 w-4" />
             </a>
           </div>
         </div>

@@ -43,7 +43,7 @@ export default function Wishlist() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           {items.length === 0 ? (
             <div className="text-center">
-              <div className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-brand/10 text-brand mb-4">
+              <div className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-[#97B002]/10 text-[#97B002] mb-4">
                 <Heart className="h-6 w-6" />
               </div>
               <div>
@@ -63,7 +63,7 @@ export default function Wishlist() {
                 </div>
                 <button
                   onClick={clear}
-                  className="text-xs sm:text-sm text-muted-foreground hover:text-brand inline-flex items-center gap-1"
+                    className="text-xs sm:text-sm text-muted-foreground hover:text-[#97B002] inline-flex items-center gap-1"
                 >
                   <Trash2 className="h-3.5 w-3.5" /> Clear all
                 </button>
@@ -114,7 +114,7 @@ export default function Wishlist() {
                               url: p.url,
                             })
                           }
-                          className="flex-1 inline-flex items-center justify-center gap-1 px-2 sm:px-3 py-2 rounded-full bg-brand text-white text-xs sm:text-sm font-medium hover:opacity-90 transition"
+                          className="flex-1 inline-flex items-center justify-center gap-1 px-2 sm:px-3 py-2 rounded-full bg-[#97B002] text-white text-xs sm:text-sm font-medium hover:opacity-90 transition"
                         >
                           <ShoppingBag className="h-3.5 w-3.5" />
                           <span className="hidden sm:inline">Add</span>
@@ -122,7 +122,7 @@ export default function Wishlist() {
                         <button
                           onClick={() => remove(p.id)}
                           aria-label="Remove from wishlist"
-                          className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border text-muted-foreground hover:text-brand hover:border-brand transition"
+                          className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border text-muted-foreground hover:text-[#97B002] hover:border-[#97B002] transition"
                         >
                           <Trash2 className="h-4 w-4" />
                         </button>

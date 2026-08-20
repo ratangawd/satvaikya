@@ -49,11 +49,12 @@ export default function Blog() {
               <button
                 key={c}
                 onClick={() => setCat(c)}
-                className={`px-4 py-2 rounded-full text-sm whitespace-nowrap border transition ${
-                  cat === c
-                    ? "bg-brand text-white border-brand"
-                    : "bg-card border-border text-muted-foreground hover:border-brand hover:text-brand"
-                }`}
+          
+                className={`px-4 py-2 rounded-full text-sm whitespace-nowrap border transition ${cat === c
+                    ? "text-white border-[#97B002]"
+                    : "bg-card border-border text-muted-foreground hover:border-[#97B002] hover:text-[#97B002]"
+                  }`}
+                style={cat === c ? { backgroundColor: "#97B002" } : undefined}
               >
                 {c}
               </button>

@@ -24,7 +24,7 @@ export default function AnnouncementBar() {
 
         const interval = window.setInterval(() => {
             setActiveIndex((current) => (current + 1) % announcements.length);
-        }, 5000);
+        }, 3000);
 
         return () => window.clearInterval(interval);
     }, [announcements.length, paused]);
@@ -34,14 +34,17 @@ export default function AnnouncementBar() {
     return (
         <div
             className="fixed top-0 left-0 right-0 z-50 h-10 overflow-hidden font-display text-lg text-black"
-            style={{
-                backgroundColor: "#D4A437",
-            }}
+           
             // style={{
-            //     backgroundImage: "url('/green-texture.png')",
-            //     backgroundSize: "cover",
-            //     backgroundPosition: "center",
+            //     backgroundColor: "#D4A437",
             // }}
+
+
+            style={{
+                backgroundImage: "url('/announcement-bg.png')",
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+            }}
             onMouseEnter={() => setPaused(true)}
             onMouseLeave={() => setPaused(false)}
         >

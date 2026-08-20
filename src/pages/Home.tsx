@@ -9,6 +9,7 @@ import {
   Mail,
   Phone,
   MapPin,
+  PencilRuler,
   Clock,
   MessageCircle,
   Instagram,
@@ -49,7 +50,8 @@ const testimonials = [
 const features = [
   { icon: Leaf, title: "Sustainable Wood", desc: "Responsibly sourced, thoughtfully finished." },
   { icon: Award, title: "Handcrafted Quality", desc: "Every piece checked, polished, packed by hand." },
-  { icon: Sparkles, title: "Design-led", desc: "Made by artisans, designed for modern homes." },
+  // { icon: Sparkles, title: "Design-led", desc: "Made by artisans, designed for modern homes." },
+  { icon: PencilRuler, title: "Customisation", desc: "Tailored designs crafted to match your unique needs." },
   { icon: Truck, title: "Pan-India Shipping", desc: "Secure delivery to every pincode in India." },
 ];
 
@@ -178,12 +180,14 @@ export default function Home() {
       />
 
       {/* ===================== HERO (full-bleed, no decorative background) ===================== */}
-      <section className="relative pt-[104px] h-[70vh] sm:h-[80vh] lg:h-[92vh] flex items-end overflow-hidden">
+
+      <section className="relative w-full aspect-[16/6.5] overflow-hidden">
         <picture>
           <source
             media="(max-width: 768px)"
             srcSet={slides[currentSlide].mobile}
           />
+
           <img
             src={slides[currentSlide].desktop}
             alt={`Hero Banner ${currentSlide + 1}`}
@@ -200,6 +204,7 @@ export default function Home() {
         >
           ❮
         </button>
+
         <button
           onClick={nextSlide}
           className="absolute right-4 sm:right-6 top-1/2 -translate-y-1/2 z-20 flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-white/20 backdrop-blur-md text-white hover:bg-white hover:text-black transition"
@@ -216,7 +221,6 @@ export default function Home() {
             transition={{ duration: 0.9, ease: [0.4, 0, 0.2, 1] }}
             className="max-w-2xl"
           >
-
           </motion.div>
         </div>
 
@@ -227,7 +231,9 @@ export default function Home() {
               key={index}
               onClick={() => setCurrentSlide(index)}
               aria-label={`Go to slide ${index + 1}`}
-              className={`h-2.5 rounded-full transition-all ${currentSlide === index ? "bg-white w-7" : "bg-white/50 w-2.5 hover:bg-white"
+              className={`h-2.5 rounded-full transition-all ${currentSlide === index
+                  ? "bg-white w-7"
+                  : "bg-white/50 w-2.5 hover:bg-white"
                 }`}
             />
           ))}
@@ -442,7 +448,7 @@ export default function Home() {
                 </div>
 
                 <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                  {instagramProducts.slice(0, 6).map((product) => {
+                  {instagramProducts.slice(0, 4).map((product) => {
                     const image =
                       product.product_images.find((i: any) => i.is_primary) ??
                       product.product_images[0];
