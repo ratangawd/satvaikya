@@ -55,6 +55,29 @@ const features = [
   { icon: Truck, title: "Pan-India Shipping", desc: "Secure delivery to every pincode in India." },
 ];
 
+const instagramPosts = [
+  {
+    image: "/images/instagram/instagram1.png",
+    link: "https://www.instagram.com/p/Db8qSj8E8_0/?igsh=enViaWE0czJweHBt",
+    alt: "SatvAikya Instagram post 1",
+  },
+  {
+    image: "/images/instagram/instagram2.png",
+    link: "https://www.instagram.com/p/DbIdPwamIlj/?igsh=Yjc2c2IxcmNwZGEw",
+    alt: "SatvAikya Instagram post 2",
+  },
+  {
+    image: "/images/instagram/instagram3.png",
+    link: "https://www.instagram.com/reel/Db5_Fk8jhRk/?igsh=ZGk3N3hlYjlnMWdq",
+    alt: "SatvAikya Instagram post 3",
+  },
+  {
+    image: "/images/instagram/instagram4.png",
+    link: "https://www.instagram.com/p/DbVHwekjvSN/?igsh=MXZ1aGNyOG5yOTI4aQ==",
+    alt: "SatvAikya Instagram post 4",
+  },
+];
+
 export default function Home() {
   const slides = [
     { desktop: banner1Desktop, mobile: banner1Mobile },
@@ -435,7 +458,7 @@ export default function Home() {
               </div>
             </section>
 
-            {/* INSTAGRAM GALLERY */}
+            {/* INSTAGRAM GALLERY
             <section className="py-20 md:py-28">
               <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div className="text-center max-w-2xl mx-auto mb-12">
@@ -483,6 +506,51 @@ export default function Home() {
                     );
                   })}
                 </div>
+              </div>
+            </section> */}
+
+            {/* INSTAGRAM GALLERY */}
+            <section className="py-20 md:py-28">
+              <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+
+                <div className="text-center max-w-2xl mx-auto mb-12">
+                  <span className="text-xs uppercase tracking-[0.25em] text-brand font-medium">
+                    @SatvAikya
+                  </span>
+
+                  <h2 className="mt-2 font-display text-3xl md:text-5xl">
+                    On Instagram
+                  </h2>
+                </div>
+
+                <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                  {instagramPosts.map((post) => (
+                    <a
+                      key={post.image}
+                      href={post.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`View ${post.alt} on Instagram`}
+                      className="group block aspect-[4/5] overflow-hidden rounded-xl relative bg-white shadow-sm hover:shadow-xl transition-all duration-300"
+                    >
+                      <img
+                        src={post.image}
+                        alt={post.alt}
+                        loading="lazy"
+                        width={600}
+                        height={750}
+                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      />
+
+                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors duration-300 flex items-center justify-center">
+                        <Instagram
+                          className="h-10 w-10 text-white opacity-0 scale-75 group-hover:opacity-100 group-hover:scale-100 transition-all duration-300 drop-shadow-lg"
+                        />
+                      </div>
+                    </a>
+                  ))}
+                </div>
+
               </div>
             </section>
 

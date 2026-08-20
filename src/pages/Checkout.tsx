@@ -145,7 +145,7 @@ export default function Checkout() {
 
                     <button
                       type="submit"
-                      className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-[#25D366] text-white font-medium hover:opacity-90 transition"
+                      className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-[#97B002] text-white font-medium hover:opacity-90 transition"
                     >
                       <MessageCircle className="h-4 w-4" />
                       Place Order via WhatsApp
