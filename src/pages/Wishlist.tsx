@@ -104,7 +104,7 @@ export default function Wishlist() {
                         <button
                           onClick={() =>
                             addItem({
-                              id: p.id,
+                              productId: p.id,
                               code: p.code,
                               name: p.name,
                               price: p.price,

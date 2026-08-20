@@ -940,17 +940,14 @@ export default function ProductPage({
                     onClick={() =>
                       addItem(
                         {
-                          id: `${category.slug}/${product.slug}`,
+                          productId: product.id,
                           code: product.code,
                           name: product.name,
                           price: product.price,
                           image: product.image,
                           categorySlug: category.slug,
                           productSlug: product.slug,
-                          url: getProductUrl(
-                            category,
-                            product
-                          ),
+                          url: getProductUrl(category, product),
                         },
                         qty
                       )

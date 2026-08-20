@@ -1,4 +1,5 @@
 import { supabase } from "@/lib/supabase";
+import { getImageUrl } from "@/services/product-image.service";
 
 export async function getCart(customerId: string) {
     const {
@@ -14,7 +15,13 @@ export async function getCart(customerId: string) {
         .from("cart_items")
         .select(`
             *,
-            products (*)
+            products (
+                *,
+                product_images (
+                    storage_path,
+                    is_primary
+                )
+            )
         `)
         .eq("customer_id", customerId);
 

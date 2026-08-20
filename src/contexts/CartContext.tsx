@@ -1,5 +1,15 @@
-import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+  type ReactNode,
+} from "react";
+
 import { useCustomerAuth } from "./CustomerAuthContext";
+
 import {
   getCart,
   addToCart,
@@ -7,9 +17,15 @@ import {
   removeFromCart,
   clearCart,
 } from "@/services/cart.service";
+import { getImageUrl } from "@/services/product-image.service";
 
 export interface CartItem {
-  id: string; // categorySlug/productSlug
+  // Supabase cart_items.id
+  id: string;
+
+  // Supabase products.id
+  productId: string;
+
   code: string;
   name: string;
   price: number;
@@ -17,11 +33,6 @@ export interface CartItem {
   categorySlug: string;
   productSlug: string;
   quantity: number;
-  /**
-   * Full, ready-to-use product URL, built once via getProductUrl() when the
-   * item was added. Prefer this over reconstructing from categorySlug/productSlug,
-   * which loses the ancestor chain for subcategory products.
-   */
   url?: string;
 }
 
@@ -30,18 +41,33 @@ interface CartContextValue {
   count: number;
   subtotal: number;
   isOpen: boolean;
+
   openCart: () => void;
   closeCart: () => void;
-  addItem: (item: Omit<CartItem, "quantity">, qty?: number) => void;
-  updateQty: (id: string, qty: number) => void;
-  removeItem: (id: string) => void;
-  clear: () => void;
+
+  addItem: (
+    item: Omit<CartItem, "id" | "productId" | "quantity"> & {
+      productId: string;
+    },
+    qty?: number
+  ) => Promise<void>;
+
+  updateQty: (id: string, qty: number) => Promise<void>;
+  removeItem: (id: string) => Promise<void>;
+  clear: () => Promise<void>;
 }
 
 const CartContext = createContext<CartContextValue | null>(null);
 
 export function CartProvider({ children }: { children: ReactNode }) {
   const { user } = useCustomerAuth();
+
+  const [items, setItems] = useState<CartItem[]>([]);
+  const [isOpen, setIsOpen] = useState(false);
+
+  // =========================================================
+  // LOAD CART FROM SUPABASE
+  // =========================================================
 
   const loadCart = useCallback(async () => {
     if (!user) {
@@ -53,82 +79,189 @@ export function CartProvider({ children }: { children: ReactNode }) {
       const cart = await getCart(user.id);
 
       setItems(
-        cart.map((item) => ({
-          id: item.id,
-          code: item.products.code ?? "",
-          name: item.products.name,
-          price: Number(item.products.price ?? 0),
-          image: item.products.image,
-          categorySlug: item.products.category_slug,
-          productSlug: item.products.slug,
-          quantity: item.quantity,
-        }))
+        cart.map((item) => {
+          const productImages = item.products.product_images as
+            | {
+              storage_path: string;
+              is_primary: boolean;
+            }[]
+            | undefined;
+
+          const primaryImage =
+            productImages?.find((img) => img.is_primary) ??
+            productImages?.[0];
+
+          return {
+            id: item.id,
+            productId: item.product_id,
+
+            code: item.products.code ?? "",
+            name: item.products.name,
+            price: Number(item.products.price ?? 0),
+
+            image: primaryImage
+              ? getImageUrl(primaryImage.storage_path)
+              : "",
+
+            categorySlug: item.products.category_slug,
+            productSlug: item.products.slug,
+
+            quantity: item.quantity,
+          };
+        })
       );
     } catch (error) {
       console.error("Failed to load cart:", error);
       setItems([]);
     }
   }, [user]);
-
   useEffect(() => {
     loadCart();
   }, [loadCart]);
 
-  const [items, setItems] = useState<CartItem[]>([]);
+  // =========================================================
+  // ADD TO CART
+  // =========================================================
 
-  const [isOpen, setIsOpen] = useState(false);
-
-  const addItem = useCallback((item: Omit<CartItem, "quantity">, qty = 1) => {
-    setItems((prev) => {
-      const existing = prev.find((p) => p.id === item.id);
-      if (existing) {
-        return prev.map((p) => (p.id === item.id ? { ...p, quantity: p.quantity + qty } : p));
+  const addItem = useCallback(
+    async (
+      item: Omit<CartItem, "id" | "productId" | "quantity"> & {
+        productId: string;
+      },
+      qty = 1
+    ) => {
+      if (!user) {
+        console.warn("User must be logged in to add items to cart.");
+        return;
       }
-      return [...prev, { ...item, quantity: qty }];
-    });
-    setIsOpen(true);
-  }, []);
 
-  const updateQty = useCallback((id: string, qty: number) => {
-    setItems((prev) =>
-      prev
-        .map((p) => (p.id === id ? { ...p, quantity: Math.max(0, qty) } : p))
-        .filter((p) => p.quantity > 0),
-    );
-  }, []);
+      try {
+        // Save to Supabase
+        await addToCart(user.id, item.productId, qty);
 
-  const removeItem = useCallback(
-    (id: string) => setItems((prev) => prev.filter((p) => p.id !== id)),
-    [],
+        // Reload from Supabase
+        await loadCart();
+
+        // Open cart drawer
+        setIsOpen(true);
+      } catch (error) {
+        console.error("Failed to add item to cart:", error);
+      }
+    },
+    [user, loadCart]
   );
 
-  const clear = useCallback(() => setItems([]), []);
+  // =========================================================
+  // UPDATE QUANTITY
+  // =========================================================
+
+  const updateQty = useCallback(
+    async (id: string, qty: number) => {
+      try {
+        const newQty = Math.max(0, qty);
+
+        if (newQty === 0) {
+          await removeFromCart(id);
+        } else {
+          await updateCartQuantity(id, newQty);
+        }
+
+        await loadCart();
+      } catch (error) {
+        console.error("Failed to update cart quantity:", error);
+      }
+    },
+    [loadCart]
+  );
+
+  // =========================================================
+  // REMOVE ITEM
+  // =========================================================
+
+  const removeItem = useCallback(
+    async (id: string) => {
+      try {
+        await removeFromCart(id);
+        await loadCart();
+      } catch (error) {
+        console.error("Failed to remove cart item:", error);
+      }
+    },
+    [loadCart]
+  );
+
+  // =========================================================
+  // CLEAR CART
+  // =========================================================
+
+  const clear = useCallback(async () => {
+    if (!user) return;
+
+    try {
+      await clearCart(user.id);
+      setItems([]);
+    } catch (error) {
+      console.error("Failed to clear cart:", error);
+    }
+  }, [user]);
+
+  // =========================================================
+  // CART CALCULATIONS
+  // =========================================================
 
   const value = useMemo<CartContextValue>(() => {
-    const count = items.reduce((s, i) => s + i.quantity, 0);
-    const subtotal = items.reduce((s, i) => s + i.quantity * i.price, 0);
+    const count = items.reduce(
+      (sum, item) => sum + item.quantity,
+      0
+    );
+
+    const subtotal = items.reduce(
+      (sum, item) => sum + item.quantity * item.price,
+      0
+    );
+
     return {
       items,
       count,
       subtotal,
+
       isOpen,
+
       openCart: () => setIsOpen(true),
       closeCart: () => setIsOpen(false),
+
       addItem,
       updateQty,
       removeItem,
       clear,
     };
-  }, [items, isOpen, addItem, updateQty, removeItem, clear]);
+  }, [
+    items,
+    isOpen,
+    addItem,
+    updateQty,
+    removeItem,
+    clear,
+  ]);
 
-  return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
+  return (
+    <CartContext.Provider value={value}>
+      {children}
+    </CartContext.Provider>
+  );
 }
 
 export function useCart() {
   const ctx = useContext(CartContext);
-  if (!ctx) throw new Error("useCart must be used inside CartProvider");
+
+  if (!ctx) {
+    throw new Error("useCart must be used inside CartProvider");
+  }
+
   return ctx;
 }
 
 export const WHATSAPP_NUMBER = "919866410523";
-export const formatINR = (n: number) => `₹${n.toLocaleString("en-IN")}`;
+
+export const formatINR = (n: number) =>
+  `₹${n.toLocaleString("en-IN")}`;
