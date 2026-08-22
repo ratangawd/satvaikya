@@ -204,7 +204,8 @@ export default function Home() {
 
       {/* ===================== HERO (full-bleed, no decorative background) ===================== */}
 
-      <section className="relative w-full aspect-[16/6.5] overflow-hidden">
+      {/* <section className="relative w-full aspect-[1122/1402] md:aspect-[16/6.5] overflow-hidden"> */}
+        <section className="relative w-full h-[calc(100vw*1.25)] md:aspect-[16/6.5] md:h-auto overflow-hidden">
         <picture>
           <source
             media="(max-width: 768px)"

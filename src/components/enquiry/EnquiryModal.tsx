@@ -76,16 +76,16 @@ export default function EnquiryModal({
             return;
         }
 
-        if (!email.trim()) {
-            alert("Please enter your email address.");
-            return;
-        }
+        // if (!email.trim()) {
+        //     alert("Please enter your email address.");
+        //     return;
+        // }
 
-        const emailIsValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
-        if (!emailIsValid) {
-            alert("Please enter a valid email address.");
-            return;
-        }
+        // const emailIsValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+        // if (!emailIsValid) {
+        //     alert("Please enter a valid email address.");
+        //     return;
+        // }
 
         try {
             setSubmitting(true);
@@ -206,7 +206,7 @@ export default function EnquiryModal({
                         <input
                             className="w-full rounded-lg border p-3"
                             required
-                            placeholder="Name"
+                            placeholder="Name *"
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                         />
@@ -223,15 +223,14 @@ export default function EnquiryModal({
                         <input
                             className="w-full rounded-lg border p-3"
                             type="email"
-                            required
-                            placeholder="Email *"
+                            placeholder="Email (Optional)"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                         />
 
                         <input
                             className="w-full rounded-lg border p-3"
-                            placeholder="City"
+                            placeholder="City (Optional)"
                             value={city}
                             onChange={(e) => setCity(e.target.value)}
                         />

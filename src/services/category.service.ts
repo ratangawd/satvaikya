@@ -31,15 +31,23 @@ export async function createCategory(
 
     let imagePath = "";
     let bannerImagePath = "";
+    let bannerMobileImagePath = "";
 
     // Upload collection card image
     if (category.image) {
         imagePath = await uploadCategoryImage(category.image);
     }
 
-    // Upload collection banner image
+    // Upload collection desktop banner image
     if (category.bannerImage) {
         bannerImagePath = await uploadCategoryImage(category.bannerImage);
+    }
+
+    // Upload collection mobile banner image
+    if (category.bannerMobileImage) {
+        bannerMobileImagePath = await uploadCategoryImage(
+            category.bannerMobileImage
+        );
     }
 
     const { data, error } = await supabase
@@ -56,8 +64,11 @@ export async function createCategory(
                 // Card image
                 image_path: imagePath || null,
 
-                // Banner image
+                // Desktop banner image
                 banner_image_path: bannerImagePath || null,
+
+                // Mobile banner image
+                banner_mobile_image_path: bannerMobileImagePath || null,
 
                 image_alt: category.image_alt ?? "",
             },
@@ -77,15 +88,23 @@ export async function updateCategory(
 
     let imagePath: string | undefined;
     let bannerImagePath: string | undefined;
+    let bannerMobileImagePath: string | undefined;
 
     // Upload new card image only if selected
     if (category.image) {
         imagePath = await uploadCategoryImage(category.image);
     }
 
-    // Upload new banner image only if selected
+    // Upload new desktop banner image only if selected
     if (category.bannerImage) {
         bannerImagePath = await uploadCategoryImage(category.bannerImage);
+    }
+
+    // Upload new mobile banner image only if selected
+    if (category.bannerMobileImage) {
+        bannerMobileImagePath = await uploadCategoryImage(
+            category.bannerMobileImage
+        );
     }
 
     const { data, error } = await supabase
@@ -104,6 +123,10 @@ export async function updateCategory(
 
             ...(bannerImagePath && {
                 banner_image_path: bannerImagePath,
+            }),
+
+            ...(bannerMobileImagePath && {
+                banner_mobile_image_path: bannerMobileImagePath,
             }),
 
             image_alt: category.image_alt ?? "",

@@ -13,8 +13,11 @@ export interface Category {
     image_path?: string | null;
     image_alt?: string | null;
 
-    // Collection page banner image
+    // Collection page desktop banner image
     banner_image_path?: string | null;
+
+    // Collection page mobile banner image
+    banner_mobile_image_path?: string | null;
 }
 
 export interface CategoryFormData {
@@ -28,8 +31,11 @@ export interface CategoryFormData {
     // Collection card image
     image?: File | null;
 
-    // Collection page banner image
+    // Collection page desktop banner image
     bannerImage?: File | null;
 
+    // Collection page mobile banner image
+    bannerMobileImage?: File | null;
+
     image_alt?: string;
-}   
+}

@@ -19,21 +19,65 @@ export async function register(
     email: string,
     password: string
 ) {
+    // Check duplicate email
+    const { data: existingEmail, error: emailCheckError } =
+        await supabase
+            .from("customer_profiles")
+            .select("id")
+            .eq("email", email.trim().toLowerCase())
+            .maybeSingle();
+
+    if (emailCheckError) {
+        throw emailCheckError;
+    }
+
+    if (existingEmail) {
+        throw new Error("This email is already registered.");
+    }
+
+    // Check duplicate phone
+    const { data: existingPhone, error: phoneCheckError } =
+        await supabase
+            .from("customer_profiles")
+            .select("id")
+            .eq("phone", phone.trim())
+            .maybeSingle();
+
+    if (phoneCheckError) {
+        throw phoneCheckError;
+    }
+
+    if (existingPhone) {
+        throw new Error("This phone number is already registered.");
+    }
+
+    // Create Auth account
     const { data, error } =
         await supabase.auth.signUp({
-            email,
+            email: email.trim().toLowerCase(),
             password,
-
             options: {
                 data: {
-                    first_name: firstName,
-                    last_name: lastName,
-                    phone,
+                    first_name: firstName.trim(),
+                    last_name: lastName.trim(),
+                    phone: phone.trim(),
                 },
             },
         });
 
-    if (error) throw error;
+    if (error) {
+        throw error;
+    }
+
+    // Supabase may return an empty identities array
+    // when the email already exists.
+    if (
+        data.user &&
+        data.user.identities &&
+        data.user.identities.length === 0
+    ) {
+        throw new Error("This email is already registered.");
+    }
 
     return data;
 }

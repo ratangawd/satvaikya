@@ -25,6 +25,7 @@ export default function Register() {
     });
     const password = watch("password");
     const onSubmit = async (data: RegisterFormData) => {
+
         try {
             setLoading(true);
 
@@ -41,13 +42,22 @@ export default function Register() {
             );
 
             navigate("/login");
+
         } catch (error: any) {
-            toast.error(error.message || "Registration failed.");
+            console.error("REGISTER ERROR:", error);
+
+            toast.error(
+                error?.message || "Registration failed."
+            );
+
+            // setTimeout(() => {
+            //     window.location.reload();
+            // }, 1500);
+
         } finally {
             setLoading(false);
         }
     };
-
     const navigate = useNavigate();
 
     const { register: registerCustomer } = useCustomerAuth();

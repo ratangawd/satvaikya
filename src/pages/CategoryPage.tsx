@@ -1,4 +1,5 @@
-//Folder 2 - CategoryPage.tsx
+// Folder 2 - CategoryPage.tsx
+
 /**
  * CategoryPage.tsx
  *
@@ -8,49 +9,72 @@
  *   3. Both            → child-category cards first, then products
  *   4. Neither         → "Products Coming Soon" message
  *
- * Breadcrumbs now use the `ancestors` array returned by getStoreCategory
- * so the full path is always shown, e.g. Home › Collections › Furniture › Office Chairs.
+ * Breadcrumbs use the `ancestors` array returned by getStoreCategory
+ * so the full path is always shown.
  */
 
 import { useEffect, useMemo, useState } from "react";
-import { getStoreCategory, getCategoryUrl, getProductUrl } from "@/services/store.service";
+import {
+  getStoreCategory,
+  getCategoryUrl,
+  getProductUrl,
+} from "@/services/store.service";
 import type { StoreCategory } from "@/services/store.service";
 import { Link, useParams } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowRight, ChevronRight, LayoutGrid, List } from "lucide-react";
+import {
+  ArrowRight,
+  ChevronRight,
+  LayoutGrid,
+  List,
+} from "lucide-react";
 import SEO from "@/components/SEO";
 import PageTransition from "@/components/PageTransition";
 import WishlistButton from "@/components/WishlistButton";
 import NotFound from "./NotFound";
 import { formatINR } from "@/contexts/CartContext";
-import { getCategoryImageUrl } from "@/services/category-image.service";
 
-type Sort = "featured" | "priceAsc" | "priceDesc" | "name";
+type Sort =
+  | "featured"
+  | "priceAsc"
+  | "priceDesc"
+  | "name";
 
 interface CategoryPageProps {
   /**
-   * Resolved category, passed down by CategoryOrProductResolver (the
-   * normal path — resolution happens once, centrally, via
-   * resolveStorePath()). If omitted, this component falls back to
-   * resolving its own slug from the URL, so it still works if ever
-   * mounted directly.
+   * Resolved category, passed down by CategoryOrProductResolver.
+   * If omitted, this component falls back to resolving its own slug
+   * from the URL.
    */
   category?: StoreCategory;
 }
 
-export default function CategoryPage({ category: categoryProp }: CategoryPageProps) {
+export default function CategoryPage({
+  category: categoryProp,
+}: CategoryPageProps) {
   const params = useParams();
-  // Fallback slug: last non-empty segment of the current path, used only
-  // when no `category` prop was supplied.
-  const fallbackSlug = (params["*"] ?? params.categorySlug ?? "")
-    .split("/")
-    .filter(Boolean)
-    .pop() ?? "";
 
-  const [category, setCategory] = useState<StoreCategory | null>(categoryProp ?? null);
-  const [loading, setLoading] = useState(!categoryProp);
-  const [sort, setSort] = useState<Sort>("featured");
-  const [view, setView] = useState<"grid" | "list">("grid");
+  // Fallback slug: last non-empty segment of current path.
+  const fallbackSlug =
+    (params["*"] ?? params.categorySlug ?? "")
+      .split("/")
+      .filter(Boolean)
+      .pop() ?? "";
+
+  const [category, setCategory] =
+    useState<StoreCategory | null>(
+      categoryProp ?? null
+    );
+
+  const [loading, setLoading] = useState(
+    !categoryProp
+  );
+
+  const [sort, setSort] =
+    useState<Sort>("featured");
+
+  const [view, setView] =
+    useState<"grid" | "list">("grid");
 
   useEffect(() => {
     if (categoryProp) {
@@ -64,7 +88,9 @@ export default function CategoryPage({ category: categoryProp }: CategoryPagePro
 
     async function loadCategory() {
       try {
-        const data = await getStoreCategory(fallbackSlug);
+        const data =
+          await getStoreCategory(fallbackSlug);
+
         setCategory(data);
       } catch (error) {
         console.error(error);
@@ -78,45 +104,90 @@ export default function CategoryPage({ category: categoryProp }: CategoryPagePro
 
   const products = useMemo(() => {
     if (!category) return [];
+
     const arr = [...category.products];
-    if (sort === "priceAsc") arr.sort((a, b) => a.price - b.price);
-    if (sort === "priceDesc") arr.sort((a, b) => b.price - a.price);
-    if (sort === "name") arr.sort((a, b) => a.name.localeCompare(b.name));
+
+    if (sort === "priceAsc") {
+      arr.sort((a, b) => a.price - b.price);
+    }
+
+    if (sort === "priceDesc") {
+      arr.sort((a, b) => b.price - a.price);
+    }
+
+    if (sort === "name") {
+      arr.sort((a, b) =>
+        a.name.localeCompare(b.name)
+      );
+    }
+
     return arr;
   }, [category, sort]);
 
   const children = category?.children ?? [];
-  const hasChildren = children.length > 0;
-  const hasProducts = products.length > 0;
+
+  const hasChildren =
+    children.length > 0;
+
+  const hasProducts =
+    products.length > 0;
+
+  /* =========================================================
+     LOADING
+  ========================================================= */
 
   if (loading) {
     return (
       <PageTransition>
-        <div className="pt-40 text-center text-muted-foreground">Loading…</div>
+        <div className="pt-40 text-center text-muted-foreground">
+          Loading…
+        </div>
       </PageTransition>
     );
   }
+
+  /* =========================================================
+     NOT FOUND
+  ========================================================= */
 
   if (!category) {
     return <NotFound />;
   }
 
-  // Build breadcrumb JSON-LD items
+  /* =========================================================
+     BREADCRUMB JSON-LD
+  ========================================================= */
+
   const breadcrumbItems = [
-    { "@type": "ListItem", position: 1, name: "Home", item: "/" },
-    { "@type": "ListItem", position: 2, name: "Collections", item: "/collections" },
-    ...category.ancestors.map((a, idx) => ({
-      "@type": "ListItem",
-      position: 3 + idx,
-      name: a.name,
-      item: `/collections/${category.ancestors
-        .slice(0, idx + 1)
-        .map((s) => s.slug)
-        .join("/")}`,
-    })),
     {
       "@type": "ListItem",
-      position: 3 + category.ancestors.length,
+      position: 1,
+      name: "Home",
+      item: "/",
+    },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: "Collections",
+      item: "/collections",
+    },
+
+    ...category.ancestors.map(
+      (ancestor, idx) => ({
+        "@type": "ListItem",
+        position: 3 + idx,
+        name: ancestor.name,
+        item: `/collections/${category.ancestors
+          .slice(0, idx + 1)
+          .map((s) => s.slug)
+          .join("/")}`,
+      })
+    ),
+
+    {
+      "@type": "ListItem",
+      position:
+        3 + category.ancestors.length,
       name: category.name,
       item: getCategoryUrl(category),
     },
@@ -136,106 +207,434 @@ export default function CategoryPage({ category: categoryProp }: CategoryPagePro
         }}
       />
 
-      {/* BANNER */}
-      <section className="relative pt-24 h-[52vh] min-h-[400px] flex items-end overflow-hidden">
-        <img
-          src={category.bannerImage || category.image}
-          alt={category.name}
-          className="absolute inset-0 h-full w-full object-cover"
-          width={1920}
-          height={800}
+      {/* =====================================================
+          COLLECTION BANNER
+          ===================================================== */}
+
+      <section
+        className="
+          relative
+          overflow-hidden
+          bg-black
+
+          /* MOBILE
+             1080 × 1350 = 4:5
+             Therefore:
+             height = viewport width × 1.25
+          */
+          h-[125vw]
+          min-h-[480px]
+          max-h-[700px]
+
+          pt-24
+
+          /* DESKTOP */
+          md:h-[52vh]
+          md:min-h-[400px]
+          md:max-h-none
+          md:pt-24
+        "
+      >
+        {/* =================================================
+            BANNER IMAGE
+            ================================================= */}
+
+        <picture className="absolute inset-0 block h-full w-full">
+          {/* MOBILE PORTRAIT IMAGE */}
+          <source
+            media="(max-width: 767px)"
+            srcSet={
+              category.bannerMobileImage ||
+              category.bannerImage ||
+              category.image
+            }
+          />
+
+          {/* DESKTOP WIDE IMAGE */}
+          <img
+            src={
+              category.bannerImage ||
+              category.image
+            }
+            alt={category.name}
+            width={1920}
+            height={800}
+            className="
+              absolute
+              inset-0
+              h-full
+              w-full
+              object-cover
+              object-center
+            "
+          />
+        </picture>
+
+        {/* =================================================
+            OVERLAY
+            ================================================= */}
+
+        <div
+          className="
+            absolute
+            inset-0
+
+            bg-gradient-to-t
+            from-black/90
+            via-black/35
+            to-black/10
+
+            md:bg-gradient-to-t
+            md:from-black/85
+            md:via-black/40
+            md:to-transparent
+          "
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent" />
-        <div className="relative mx-auto max-w-7xl w-full px-4 sm:px-6 lg:px-8 pb-10 md:pb-16 text-white">
-          {/* ── Breadcrumbs: full ancestor path ── */}
-          <nav className="text-xs text-white/70 flex items-center gap-1 flex-wrap">
-            <Link to="/" className="hover:text-gold transition-colors">Home</Link>
-            <ChevronRight className="h-3 w-3 shrink-0" />
-            <Link to="/collections" className="hover:text-gold transition-colors">Collections</Link>
 
-            {category.ancestors.map((ancestor, idx) => {
-              const ancestorPath = `/collections/${category.ancestors
-                .slice(0, idx + 1)
-                .map((a) => a.slug)
-                .join("/")}`;
-              return (
-                <>
-                  <ChevronRight key={`sep-${ancestor.slug}`} className="h-3 w-3 shrink-0" />
-                  <Link
+        {/* =================================================
+            BANNER CONTENT
+            ================================================= */}
+
+        <div
+          className="
+            relative
+            z-10
+            mx-auto
+            flex
+            h-full
+            w-full
+            max-w-7xl
+            flex-col
+            justify-end
+
+            px-4
+            pb-7
+
+            sm:px-6
+            sm:pb-9
+
+            md:px-8
+            md:pb-16
+          "
+        >
+          {/* =================================================
+              BREADCRUMBS
+              ================================================= */}
+
+          <nav
+            className="
+              flex
+              flex-wrap
+              items-center
+              gap-1
+
+              text-[11px]
+              leading-5
+              text-white/75
+
+              sm:text-xs
+            "
+          >
+            <Link
+              to="/"
+              className="transition-colors hover:text-gold"
+            >
+              Home
+            </Link>
+
+            <ChevronRight className="h-3 w-3 shrink-0" />
+
+            <Link
+              to="/collections"
+              className="transition-colors hover:text-gold"
+            >
+              Collections
+            </Link>
+
+            {category.ancestors.map(
+              (ancestor, idx) => {
+                const ancestorPath =
+                  `/collections/${category.ancestors
+                    .slice(0, idx + 1)
+                    .map((a) => a.slug)
+                    .join("/")}`;
+
+                return (
+                  <span
                     key={ancestor.slug}
-                    to={ancestorPath}
-                    className="hover:text-gold transition-colors"
+                    className="
+                      flex
+                      items-center
+                      gap-1
+                    "
                   >
-                    {ancestor.name}
-                  </Link>
-                </>
-              );
-            })}
+                    <ChevronRight className="h-3 w-3 shrink-0" />
+
+                    <Link
+                      to={ancestorPath}
+                      className="transition-colors hover:text-gold"
+                    >
+                      {ancestor.name}
+                    </Link>
+                  </span>
+                );
+              }
+            )}
 
             <ChevronRight className="h-3 w-3 shrink-0" />
-            <span className="text-white">{category.name}</span>
+
+            <span className="text-white">
+              {category.name}
+            </span>
           </nav>
 
-          <span className="mt-4 inline-block text-xs uppercase tracking-[0.25em] text-gold">
+          {/* =================================================
+              TAGLINE
+              ================================================= */}
+
+          <span
+            className="
+              mt-3
+              inline-block
+
+              text-[10px]
+              uppercase
+              tracking-[0.20em]
+              text-gold
+
+              sm:mt-4
+              sm:text-xs
+              sm:tracking-[0.25em]
+            "
+          >
             {category.tagline}
           </span>
-          <h1 className="mt-2 font-display text-4xl md:text-6xl">{category.name}</h1>
-          <p className="mt-3 text-white/85 max-w-2xl">{category.description}</p>
+
+          {/* =================================================
+              CATEGORY NAME
+              ================================================= */}
+
+          <h1
+            className="
+              mt-1
+              font-display
+              text-4xl
+
+              sm:text-5xl
+
+              md:mt-2
+              md:text-6xl
+            "
+          >
+            {category.name}
+          </h1>
+
+          {/* =================================================
+              DESCRIPTION
+              ================================================= */}
+
+          <p
+            className="
+              mt-2
+              max-w-2xl
+
+              text-sm
+              leading-relaxed
+              text-white/85
+
+              sm:text-base
+
+              md:mt-3
+            "
+          >
+            {category.description}
+          </p>
         </div>
       </section>
 
-      {/* ── CHILD CATEGORIES (if any) ── */}
+      {/* =====================================================
+          CHILD CATEGORIES
+          ===================================================== */}
+
       {hasChildren && (
         <section className="py-10 md:py-14">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <h2 className="font-display text-2xl md:text-3xl mb-6">
-              {hasProducts ? "Sub-Collections" : "Collections"}
+            <h2 className="mb-6 font-display text-2xl md:text-3xl">
+              {hasProducts
+                ? "Sub-Collections"
+                : "Collections"}
             </h2>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-5 md:gap-6">
+
+            <div
+              className="
+                grid
+                grid-cols-2
+                gap-3
+
+                sm:gap-5
+
+                md:grid-cols-3
+                md:gap-6
+
+                lg:grid-cols-4
+              "
+            >
               {children.map((child, i) => (
                 <motion.article
                   key={child.slug}
-                  initial={{ opacity: 0, y: 24 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-60px" }}
-                  transition={{ duration: 0.5, delay: (i % 4) * 0.05 }}
-                  className="group bg-card rounded-2xl border border-border overflow-hidden hover:shadow-2xl transition-all duration-500"
+                  initial={{
+                    opacity: 0,
+                    y: 24,
+                  }}
+                  whileInView={{
+                    opacity: 1,
+                    y: 0,
+                  }}
+                  viewport={{
+                    once: true,
+                    margin: "-60px",
+                  }}
+                  transition={{
+                    duration: 0.5,
+                    delay: (i % 4) * 0.05,
+                  }}
+                  className="
+                    group
+                    overflow-hidden
+                    rounded-2xl
+                    border
+                    border-border
+                    bg-card
+                    transition-all
+                    duration-500
+                    hover:shadow-2xl
+                  "
                 >
                   <Link
-                    to={`${getCategoryUrl(category)}/${child.slug}`}
+                    to={`${getCategoryUrl(
+                      category
+                    )}/${child.slug}`}
                     className="block"
                   >
                     <div className="aspect-[4/3] overflow-hidden">
                       <img
                         src={child.image}
                         alt={child.name}
-                        className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                        className="
+                          h-full
+                          w-full
+                          object-cover
+                          transition-transform
+                          duration-700
+                          group-hover:scale-110
+                        "
                         loading="lazy"
                         width={800}
                         height={600}
                       />
                     </div>
+
                     <div className="p-3 sm:p-5 md:p-6">
                       <div className="flex items-center justify-between gap-2">
                         <div className="min-w-0">
-                          <div className="text-[10px] sm:text-[11px] uppercase tracking-widest text-gold truncate">
+                          <div
+                            className="
+                              truncate
+                              text-[10px]
+                              uppercase
+                              tracking-widest
+                              text-gold
+
+                              sm:text-[11px]
+                            "
+                          >
                             {child.tagline}
                           </div>
-                          <h3 className="mt-1 font-display text-base sm:text-xl md:text-2xl group-hover:text-brand transition-colors truncate">
+
+                          <h3
+                            className="
+                              mt-1
+                              truncate
+                              font-display
+                              text-base
+                              transition-colors
+                              group-hover:text-brand
+
+                              sm:text-xl
+
+                              md:text-2xl
+                            "
+                          >
                             {child.name}
                           </h3>
                         </div>
+
                         {child.products.length > 0 && (
-                          <span className="hidden sm:inline-flex text-xs bg-brand/10 text-brand rounded-full px-2.5 py-1 whitespace-nowrap shrink-0">
+                          <span
+                            className="
+                              hidden
+                              shrink-0
+                              whitespace-nowrap
+                              rounded-full
+                              bg-brand/10
+                              px-2.5
+                              py-1
+                              text-xs
+                              text-brand
+
+                              sm:inline-flex
+                            "
+                          >
                             {child.products.length}
                           </span>
                         )}
                       </div>
-                      <p className="mt-2 hidden md:block text-sm text-muted-foreground line-clamp-2">
+
+                      <p
+                        className="
+                          mt-2
+                          hidden
+                          line-clamp-2
+                          text-sm
+                          text-muted-foreground
+
+                          md:block
+                        "
+                      >
                         {child.description}
                       </p>
-                      <div className="mt-3 md:mt-5 inline-flex items-center gap-1 text-xs sm:text-sm text-brand group-hover:text-gold transition font-medium">
-                        View <ArrowRight className="h-3.5 w-3.5 sm:h-4 sm:w-4 group-hover:translate-x-1 transition" />
+
+                      <div
+                        className="
+                          mt-3
+                          inline-flex
+                          items-center
+                          gap-1
+                          text-xs
+                          font-medium
+                          text-brand
+                          transition
+
+                          group-hover:text-gold
+
+                          sm:text-sm
+
+                          md:mt-5
+                        "
+                      >
+                        View
+
+                        <ArrowRight
+                          className="
+                            h-3.5
+                            w-3.5
+                            transition
+                            group-hover:translate-x-1
+
+                            sm:h-4
+                            sm:w-4
+                          "
+                        />
                       </div>
                     </div>
                   </Link>
@@ -246,41 +645,137 @@ export default function CategoryPage({ category: categoryProp }: CategoryPagePro
         </section>
       )}
 
-      {/* ── PRODUCTS TOOLBAR (only when there are products) ── */}
+      {/* =====================================================
+          PRODUCTS TOOLBAR
+          ===================================================== */}
+
       {hasProducts && (
         <>
-          <section className="border-b border-border bg-background sticky top-16 md:top-20 z-20">
-            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-4 grid grid-cols-[minmax(0,1fr)_auto] gap-3 items-center">
-              <div className="text-sm text-muted-foreground min-w-0 truncate">
+          <section
+            className="
+              sticky
+              top-16
+              z-20
+              border-b
+              border-border
+              bg-background
+
+              md:top-20
+            "
+          >
+            <div
+              className="
+                mx-auto
+                grid
+                max-w-7xl
+                grid-cols-[minmax(0,1fr)_auto]
+                items-center
+                gap-3
+                px-4
+                py-4
+
+                sm:px-6
+
+                lg:px-8
+              "
+            >
+              <div
+                className="
+                  min-w-0
+                  truncate
+                  text-sm
+                  text-muted-foreground
+                "
+              >
                 {hasChildren && (
-                  <span className="mr-2 font-medium text-foreground">{category.name} Products</span>
+                  <span className="mr-2 font-medium text-foreground">
+                    {category.name} Products
+                  </span>
                 )}
-                <span className="text-foreground font-medium">{products.length}</span> product{products.length !== 1 ? "s" : ""}
+
+                <span className="font-medium text-foreground">
+                  {products.length}
+                </span>{" "}
+                product
+                {products.length !== 1
+                  ? "s"
+                  : ""}
               </div>
-              <div className="flex items-center gap-2 shrink-0">
-                <label className="hidden sm:block text-xs text-muted-foreground">Sort</label>
+
+              <div className="flex shrink-0 items-center gap-2">
+                <label className="hidden text-xs text-muted-foreground sm:block">
+                  Sort
+                </label>
+
                 <select
                   value={sort}
-                  onChange={(e) => setSort(e.target.value as Sort)}
-                  className="px-3 py-2 rounded-full border border-border bg-card text-sm focus:outline-none focus:border-brand"
+                  onChange={(e) =>
+                    setSort(
+                      e.target.value as Sort
+                    )
+                  }
+                  className="
+                    rounded-full
+                    border
+                    border-border
+                    bg-card
+                    px-3
+                    py-2
+                    text-sm
+                    focus:border-brand
+                    focus:outline-none
+                  "
                 >
-                  <option value="featured">Featured</option>
-                  <option value="priceAsc">Price: Low → High</option>
-                  <option value="priceDesc">Price: High → Low</option>
-                  <option value="name">Alphabetical</option>
+                  <option value="featured">
+                    Featured
+                  </option>
+
+                  <option value="priceAsc">
+                    Price: Low → High
+                  </option>
+
+                  <option value="priceDesc">
+                    Price: High → Low
+                  </option>
+
+                  <option value="name">
+                    Alphabetical
+                  </option>
                 </select>
-                <div className="hidden md:inline-flex rounded-full border border-border overflow-hidden">
+
+                <div
+                  className="
+                    hidden
+                    overflow-hidden
+                    rounded-full
+                    border
+                    border-border
+
+                    md:inline-flex
+                  "
+                >
                   <button
                     aria-label="Grid view"
-                    onClick={() => setView("grid")}
-                    className={`p-2 ${view === "grid" ? "bg-brand text-white" : "text-muted-foreground hover:bg-muted"}`}
+                    onClick={() =>
+                      setView("grid")
+                    }
+                    className={`p-2 ${view === "grid"
+                        ? "bg-brand text-white"
+                        : "text-muted-foreground hover:bg-muted"
+                      }`}
                   >
                     <LayoutGrid className="h-4 w-4" />
                   </button>
+
                   <button
                     aria-label="List view"
-                    onClick={() => setView("list")}
-                    className={`p-2 ${view === "list" ? "bg-brand text-white" : "text-muted-foreground hover:bg-muted"}`}
+                    onClick={() =>
+                      setView("list")
+                    }
+                    className={`p-2 ${view === "list"
+                        ? "bg-brand text-white"
+                        : "text-muted-foreground hover:bg-muted"
+                      }`}
                   >
                     <List className="h-4 w-4" />
                   </button>
@@ -289,48 +784,83 @@ export default function CategoryPage({ category: categoryProp }: CategoryPagePro
             </div>
           </section>
 
-          {/* ── PRODUCTS GRID / LIST ── */}
-          <section className={hasChildren ? "py-10 md:py-14 border-t border-border" : "py-12 md:py-16"}>
+          {/* =================================================
+              PRODUCTS GRID / LIST
+              ================================================= */}
+
+          <section
+            className={
+              hasChildren
+                ? "border-t border-border py-10 md:py-14"
+                : "py-12 md:py-16"
+            }
+          >
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
               {hasChildren && (
-                <h2 className="font-display text-2xl md:text-3xl mb-6">Products in {category.name}</h2>
+                <h2 className="mb-6 font-display text-2xl md:text-3xl">
+                  Products in {category.name}
+                </h2>
               )}
+
               <div
                 className={
                   view === "grid"
-                    ? "grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-5 md:gap-6"
+                    ? "grid grid-cols-2 gap-3 sm:gap-5 md:grid-cols-3 md:gap-6 lg:grid-cols-4"
                     : "space-y-4"
                 }
               >
                 {products.map((p, i) => (
                   <motion.article
                     key={p.slug}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5, delay: i * 0.06 }}
+                    initial={{
+                      opacity: 0,
+                      y: 20,
+                    }}
+                    whileInView={{
+                      opacity: 1,
+                      y: 0,
+                    }}
+                    viewport={{
+                      once: true,
+                    }}
+                    transition={{
+                      duration: 0.5,
+                      delay: i * 0.06,
+                    }}
                     className={
                       view === "grid"
-                        ? "group bg-card rounded-2xl border border-border overflow-hidden hover:shadow-2xl transition-all relative flex flex-col"
-                        : "group bg-card rounded-2xl border border-border overflow-hidden hover:shadow-lg transition-all grid grid-cols-[140px_1fr] sm:grid-cols-[200px_1fr]"
+                        ? "group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-card transition-all hover:shadow-2xl"
+                        : "group grid grid-cols-[140px_1fr] overflow-hidden rounded-2xl border border-border bg-card transition-all hover:shadow-lg sm:grid-cols-[200px_1fr]"
                     }
                   >
                     <WishlistButton
-                      className="absolute top-2 right-2 z-10"
+                      className="absolute right-2 top-2 z-10"
                       item={{
                         id: `${category.slug}/${p.slug}`,
                         code: p.code,
                         name: p.name,
                         price: p.price,
                         image: p.image,
-                        categorySlug: category.slug,
+                        categorySlug:
+                          category.slug,
                         productSlug: p.slug,
-                        url: getProductUrl(category, p),
+                        url: getProductUrl(
+                          category,
+                          p
+                        ),
                       }}
                     />
+
                     <Link
-                      to={getProductUrl(category, p)}
-                      className={view === "grid" ? "block flex-1 flex flex-col" : "contents"}
+                      to={getProductUrl(
+                        category,
+                        p
+                      )}
+                      className={
+                        view === "grid"
+                          ? "flex flex-1 flex-col"
+                          : "contents"
+                      }
                     >
                       <div className="aspect-square overflow-hidden">
                         <img
@@ -339,24 +869,59 @@ export default function CategoryPage({ category: categoryProp }: CategoryPagePro
                           loading="lazy"
                           width={800}
                           height={800}
-                          className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                          className="
+                            h-full
+                            w-full
+                            object-cover
+                            transition-transform
+                            duration-700
+                            group-hover:scale-110
+                          "
                         />
                       </div>
-                      <div className="p-3 sm:p-4 md:p-5 flex-1 flex flex-col">
-                        <div className="text-[10px] sm:text-[11px] uppercase tracking-widest text-gold">
+
+                      <div className="flex flex-1 flex-col p-3 sm:p-4 md:p-5">
+                        <div className="text-[10px] uppercase tracking-widest text-gold sm:text-[11px]">
                           Code {p.code}
                         </div>
-                        <h3 className="mt-1 font-display text-sm sm:text-base md:text-lg group-hover:text-brand transition line-clamp-2">
+
+                        <h3
+                          className="
+                            mt-1
+                            line-clamp-2
+                            font-display
+                            text-sm
+                            transition
+                            group-hover:text-brand
+
+                            sm:text-base
+
+                            md:text-lg
+                          "
+                        >
                           {p.name}
                         </h3>
-                        <p className="mt-1 hidden md:block text-sm text-muted-foreground line-clamp-2">
+
+                        <p
+                          className="
+                            mt-1
+                            hidden
+                            line-clamp-2
+                            text-sm
+                            text-muted-foreground
+
+                            md:block
+                          "
+                        >
                           {p.short}
                         </p>
-                        <div className="mt-auto pt-3 flex items-center justify-between gap-2">
-                          <span className="font-display text-base sm:text-lg md:text-xl text-brand">
+
+                        <div className="mt-auto flex items-center justify-between gap-2 pt-3">
+                          <span className="font-display text-base text-brand sm:text-lg md:text-xl">
                             {formatINR(p.price)}
                           </span>
-                          <span className="hidden sm:inline text-xs text-brand group-hover:text-gold transition">
+
+                          <span className="hidden text-xs text-brand transition group-hover:text-gold sm:inline">
                             View →
                           </span>
                         </div>
@@ -370,21 +935,49 @@ export default function CategoryPage({ category: categoryProp }: CategoryPagePro
         </>
       )}
 
-      {/* ── COMING SOON (neither children nor products) ── */}
+      {/* =====================================================
+          COMING SOON
+          ===================================================== */}
+
       {!hasChildren && !hasProducts && (
         <section className="py-24 md:py-32">
-          <div className="mx-auto max-w-xl px-4 sm:px-6 lg:px-8 text-center">
-            <div className="text-5xl mb-6">🪵</div>
-            <h2 className="font-display text-3xl md:text-4xl">Products Coming Soon</h2>
-            <p className="mt-4 text-muted-foreground leading-relaxed">
-              We're crafting something beautiful for this collection. Check back soon or explore our
-              other collections in the meantime.
+          <div className="mx-auto max-w-xl px-4 text-center sm:px-6 lg:px-8">
+            <div className="mb-6 text-5xl">
+              🪵
+            </div>
+
+            <h2 className="font-display text-3xl md:text-4xl">
+              Products Coming Soon
+            </h2>
+
+            <p className="mt-4 leading-relaxed text-muted-foreground">
+              We're crafting something
+              beautiful for this collection.
+              Check back soon or explore our
+              other collections in the
+              meantime.
             </p>
+
             <Link
               to="/collections"
-              className="mt-8 inline-flex items-center gap-2 px-6 py-3 rounded-full bg-brand text-white font-medium hover:bg-brand-hover transition"
+              className="
+                mt-8
+                inline-flex
+                items-center
+                gap-2
+                rounded-full
+                bg-brand
+                px-6
+                py-3
+                font-medium
+                text-white
+                transition
+                hover:bg-brand-hover
+              "
             >
-              Explore Collections <ArrowRight className="h-4 w-4" />
+              Explore Collections
+
+              <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
         </section>

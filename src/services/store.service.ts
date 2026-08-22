@@ -48,6 +48,7 @@ export interface StoreCategory {
     description: string;
     image: string;
     bannerImage: string;
+    bannerMobileImage: string;
     imageAlt: string;
     products: StoreProduct[];
     children: StoreCategory[];
@@ -149,6 +150,10 @@ export async function getStoreCategories(): Promise<StoreCategory[]> {
 
             bannerImage: category.banner_image_path
                 ? getCategoryImageUrl(category.banner_image_path as string)
+                : "",
+
+            bannerMobileImage: category.banner_mobile_image_path
+                ? getCategoryImageUrl(category.banner_mobile_image_path as string)
                 : "",
 
             imageAlt: category.image_alt as string,
